@@ -19,8 +19,9 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../lib'))
 import django
-sys.path.insert(0, os.path.abspath('../src'))
-os.environ['DJANGO_SETTINGS_MODULE'] = 'leva.settings.memory'
+sys.path.insert(0, os.path.abspath('../django_roles'))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
+os.environ['DJANGO_SECRET_KEY'] = 'adfewoiur943279skfahladf'
 django.setup()
 
 # -- Project information -----------------------------------------------------

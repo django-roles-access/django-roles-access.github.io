@@ -1,21 +1,24 @@
----------
+=========
 Reference
----------
+=========
 
+----------
 Data Model
 ----------
 
 .. automodule:: roles.models
    :members:
 
+----------
 Decorators
 ----------
 
 .. automodule:: roles.decorators
    :members:
 
-Vistas
-------
+----------
+Middleware
+----------
 
-.. automodule:: roles.views
+.. automodule:: roles.middleware
    :members:

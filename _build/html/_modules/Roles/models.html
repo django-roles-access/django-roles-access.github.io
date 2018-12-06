@@ -77,7 +77,10 @@
 <span></span><span class="c1"># encoding=&#39;utf-8&#39;</span>
 
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="k">import</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="nn">django.utils.text</span> <span class="k">import</span> <span class="n">gettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">django.utils.text</span> <span class="k">import</span> <span class="n">gettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="k">import</span> <span class="n">gettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="k">import</span> <span class="n">Group</span>
 
 
@@ -88,22 +91,26 @@
 <span class="p">)</span>
 
 
-<span class="c1"># TODO: url_name should be choice field where choice are existing url names. For this, a function could be developed</span>
-<span class="c1"># TODO: to recover existing url names and deliver them as a choice list. A better solution would be to recover all</span>
-<span class="c1"># TODO: existing url names and then substract those already registered in SecurityViewAccess model.</span>
+<span class="c1"># TODO: 1)</span>
+<span class="c1"># TODO: Incorporate namespace capabilities</span>
+<span class="c1"># TODO: 2)</span>
+<span class="c1"># TODO: Admin view field should be autocomplete? of all existing view without</span>
+<span class="c1"># TODO: configuration.</span>
 <div class="viewcode-block" id="ViewAccess"><a class="viewcode-back" href="../../reference.html#roles.models.ViewAccess">[docs]</a><span class="k">class</span> <span class="nc">ViewAccess</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements security by checking url_name of each declared view with the groups</span>
 <span class="sd">    assigned to that view.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1">#: Asume view name is app:view_name</span>
-    <span class="c1">#: TODO: CORREGIR LO QUE SIGUE</span>
+    <span class="c1">#: Asumme view name is app:view_name</span>
+    <span class="c1">#: TODO: Correct next</span>
     <span class="c1">#: The url_name of the View which security access is being declared. Each</span>
     <span class="c1">#: url_name should have only one record, that will be: only one</span>
     <span class="c1">#: declaration of access right. This is why *unique* is required.</span>
     <span class="n">view</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#:</span>
+    <span class="c1">#:</span>
     <span class="nb">type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ACCESS_TYPES</span><span class="p">)</span>
-    <span class="c1">#: TODO: CORREGIR LO QUE SIGUE</span>
+    <span class="c1">#: TODO: Correct next</span>
     <span class="c1">#: Relation ManyToMany with :func:`django.contrib.auth.models.Group`. The</span>
     <span class="c1">#: relation is ManyToMany because a View can</span>
     <span class="c1">#: be accessed by more than :func:`django.contrib.auth.models.Group`.</span>
@@ -111,6 +118,20 @@
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span></div>
+
+
+<span class="c1">#: TODO: Complete and create documentation</span>
+<div class="viewcode-block" id="TemplateAccess"><a class="viewcode-back" href="../../reference.html#roles.models.TemplateAccess">[docs]</a><span class="k">class</span> <span class="nc">TemplateAccess</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#: Template&#39;s flag for restriction by role.</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#: One or more roles (:func:`django.contrib.auth.models.Group`) with access.</span>
+    <span class="n">roles</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Group</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span></div>
 </pre></div>
 
           </div>
@@ -137,7 +158,7 @@
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Aug 20, 2018</p>
+              <p class="topless">Nov 12, 2018</p>
           </div>
         
       

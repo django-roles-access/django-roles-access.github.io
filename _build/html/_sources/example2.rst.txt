@@ -1,8 +1,0 @@
----------------
-Tutorial Part 2
----------------
-
-.. _using-django-roles:
-
-Using Django-Roles
-++++++++++++++++++

@@ -74,54 +74,37 @@
           <div class="yui-g" id="_modules-roles-decorators">
             
   <h1>Source code for roles.decorators</h1><div class="highlight"><pre>
-<span></span><span class="c1"># encoding=utf-8</span>
-
-<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="k">import</span> <span class="n">PermissionDenied</span>
-<span class="kn">from</span> <span class="nn">django.urls</span> <span class="k">import</span> <span class="n">resolve</span>
-<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="k">import</span> <span class="n">Q</span>
-
-<span class="kn">from</span> <span class="nn">roles.models</span> <span class="k">import</span> <span class="n">ViewAccess</span>
+<span></span><span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="k">import</span> <span class="n">PermissionDenied</span>
+<span class="kn">from</span> <span class="nn">roles.tools</span> <span class="k">import</span> <span class="n">check_access_by_role</span>
+<span class="c1"># TODO: Create a ViewMixin which will implement the decorator.</span>
 
 
-<span class="c1"># TODO: Implement Error Managment?</span>
-
-<div class="viewcode-block" id="access_by_role"><a class="viewcode-back" href="../../reference.html#roles.decorators.access_by_role">[docs]</a><span class="k">def</span> <span class="nf">access_by_role</span><span class="p">():</span>
+<div class="viewcode-block" id="access_by_role"><a class="viewcode-back" href="../../reference.html#roles.decorators.access_by_role">[docs]</a><span class="k">def</span> <span class="nf">access_by_role</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if logged user can access the decorated function or class.</span>
 
-<span class="sd">    A user (:class:`django.contrib.auth.models.User`) can access the decorated function</span>
-<span class="sd">    or class when it belong to a :class:`django.contrib.auth.models.Group` with right</span>
-<span class="sd">    access given by an object of type :class:`roles.models.SecurityViewAccess`.</span>
+<span class="sd">    A user (:class:`django.contrib.auth.models.User`) can access the decorated</span>
+<span class="sd">    function or class when it belong to a</span>
+<span class="sd">    :class:`django.contrib.auth.models.Group` with access given by an object of</span>
+<span class="sd">    type :class:`roles.models.ViewAccess`.</span>
 
-<span class="sd">    :return:</span>
+<span class="sd">    PermissionDenied is raised if user has no access.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">check_access_for_current_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="n">have_access</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">def</span> <span class="nf">check_access</span><span class="p">(</span><span class="n">view</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">check_access_by_role</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PermissionDenied</span>
 
-            <span class="c1"># Recover actual url_name</span>
-            <span class="n">url_name</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path_info</span><span class="p">)</span><span class="o">.</span><span class="n">url_name</span>
-            <span class="n">name_space</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">resolve</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path_info</span><span class="p">)</span><span class="o">.</span><span class="n">app_name</span><span class="p">,</span> <span class="n">url_name</span><span class="p">)</span>
-
-            <span class="c1"># required_groups are the declared groups in SecurityViewAccess</span>
-            <span class="n">security_view_access</span> <span class="o">=</span> <span class="n">SecurityAccess</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-                <span class="n">Q</span><span class="p">(</span><span class="n">url_name__iexact</span><span class="o">=</span><span class="n">url_name</span><span class="p">)</span> <span class="o">|</span>
-                <span class="n">Q</span><span class="p">(</span><span class="n">url_name__iexact</span><span class="o">=</span><span class="n">name_space</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-
-            <span class="k">if</span> <span class="n">security_view_access</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PermissionDenied</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;No security configured for required url.&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">security_view_access</span><span class="o">.</span><span class="n">access_groups</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-                    <span class="c1"># For each declared group in the View.</span>
-                    <span class="n">users_groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
-                    <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">users_groups</span><span class="p">:</span>
-                        <span class="n">have_access</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">have_access</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PermissionDenied</span>
-            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">check_access_for_current_user</span>
-    <span class="k">return</span> <span class="n">decorate</span></div>
+        <span class="n">_view</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">check_access</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">_view</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">check_access</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="n">_view</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">check_access</span><span class="o">.</span><span class="vm">__doc__</span>
+        <span class="n">_view</span><span class="o">.</span><span class="n">access_by_role</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">_view</span>
+    <span class="c1"># Let use it: foo = access_by_role(foo)</span>
+    <span class="k">if</span> <span class="n">func</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">check_access</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">check_access</span></div>
 </pre></div>
 
           </div>
@@ -148,7 +131,7 @@
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Aug 20, 2018</p>
+              <p class="topless">Nov 12, 2018</p>
           </div>
         
       
