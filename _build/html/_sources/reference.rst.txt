@@ -6,19 +6,19 @@ Reference
 Data Model
 ----------
 
-.. automodule:: roles.models
+.. automodule:: django_roles.models
    :members:
 
 ----------
 Decorators
 ----------
 
-.. automodule:: roles.decorators
+.. automodule:: django_roles.decorators
    :members:
 
 ----------
 Middleware
 ----------
 
-.. automodule:: roles.middleware
+.. automodule:: django_roles.middleware
    :members:
