@@ -86,7 +86,11 @@
 <dl class="class">
 <dt id="django_roles.models.TemplateAccess">
 <em class="property">class </em><code class="descclassname">django_roles.models.</code><code class="descname">TemplateAccess</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/django_roles/models.html#TemplateAccess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#django_roles.models.TemplateAccess" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="exception">
+<dd><p>Implements security at template level.</p>
+<p>This model let administrator to add or remove Groups (roles) from <em>roles</em>
+attribute. In templates, users belonging to any added group will pass the
+check.</p>
+<dl class="exception">
 <dt id="django_roles.models.TemplateAccess.DoesNotExist">
 <em class="property">exception </em><code class="descname">DoesNotExist</code><a class="headerlink" href="#django_roles.models.TemplateAccess.DoesNotExist" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -128,12 +132,14 @@ assigned to that view.</p>
 <dl class="attribute">
 <dt id="django_roles.models.ViewAccess.roles">
 <code class="descname">roles</code><a class="headerlink" href="#django_roles.models.ViewAccess.roles" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>One or more roles (<code class="xref py py-func docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group()</span></code>) with access.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="django_roles.models.ViewAccess.type">
 <code class="descname">type</code><a class="headerlink" href="#django_roles.models.ViewAccess.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The type of access as defined by ACCESS_TYPES</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="django_roles.models.ViewAccess.view">
@@ -145,15 +151,15 @@ view’s name.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-django_roles.decorators">
-<span id="decorators"></span><h2>Decorators<a class="headerlink" href="#module-django_roles.decorators" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-django_roles.decorator">
+<span id="decorators"></span><h2>Decorators<a class="headerlink" href="#module-django_roles.decorator" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="django_roles.decorators.access_by_role">
-<code class="descclassname">django_roles.decorators.</code><code class="descname">access_by_role</code><span class="sig-paren">(</span><em>view</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/django_roles/decorators.html#access_by_role"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#django_roles.decorators.access_by_role" title="Permalink to this definition">¶</a></dt>
+<dt id="django_roles.decorator.access_by_role">
+<code class="descclassname">django_roles.decorator.</code><code class="descname">access_by_role</code><span class="sig-paren">(</span><em>view</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/django_roles/decorator.html#access_by_role"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#django_roles.decorator.access_by_role" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if logged user can access the decorated function or class.</p>
-<p>A user (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.User</span></code></a>) can access the decorated
+<p>A user (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.User</span></code></a>) can access the decorated
 function or class when it belong to a
-<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a> with access given by an object of
+<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a> with access given by an object of
 type <code class="xref py py-class docutils literal notranslate"><span class="pre">roles.models.ViewAccess</span></code>.</p>
 <p>PermissionDenied is raised if user has no access.</p>
 </dd></dl>
@@ -178,7 +184,7 @@ type <code class="xref py py-class docutils literal notranslate"><span class="pr
   <ul>
 <li><a class="reference internal" href="#">Reference</a><ul>
 <li><a class="reference internal" href="#module-django_roles.models">Data Model</a></li>
-<li><a class="reference internal" href="#module-django_roles.decorators">Decorators</a></li>
+<li><a class="reference internal" href="#module-django_roles.decorator">Decorators</a></li>
 <li><a class="reference internal" href="#module-django_roles.middleware">Middleware</a></li>
 </ul>
 </li>
@@ -212,7 +218,7 @@ type <code class="xref py py-class docutils literal notranslate"><span class="pr
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Jan 04, 2019</p>
+              <p class="topless">Feb 04, 2019</p>
           </div>
         
       

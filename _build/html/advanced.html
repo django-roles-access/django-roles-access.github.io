@@ -88,7 +88,7 @@ possible type of access to be set:</p>
 <li>Public: Any user can access the view.</li>
 <li>Authorized: Only authorized <code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.User</span></code> can access
 the view. Is equivalent to
-<a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/auth/default/#django.contrib.auth.decorators.login_required" title="(in Django v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">django.contrib.auth.decorators.login_required()</span></code></a>.</li>
+<a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/auth/default/#django.contrib.auth.decorators.login_required" title="(in Django v3.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">django.contrib.auth.decorators.login_required()</span></code></a>.</li>
 <li>By roles: Only <code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.User</span></code> belonging to
 <code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.Group</span></code> that has been granted access to the
 view can access the view.</li>
@@ -97,9 +97,9 @@ view can access the view.</li>
 <div class="section" id="without-configuration">
 <h1>Without configuration<a class="headerlink" href="#without-configuration" title="Permalink to this headline">¶</a></h1>
 <p>If an application is not declared as any of the others, but there is an
-<code class="xref py py-class docutils literal notranslate"><span class="pre">roles.models.ViewAccess</span></code> object associated for an application’s view,
-and the view is protected with decorator or middleware is being used,
-ViewAccess object will be used to restrict the access.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">roles.models.ViewAccess</span></code> object associated to a view belonging to that
+application and the view is protected with decorator or middleware is being
+used ViewAccess object will be used to restrict the access.</p>
 </div>
 <div class="section" id="namespaces-and-view-name">
 <span id="namespace-and-view-name"></span><h1>Namespaces and View Name<a class="headerlink" href="#namespaces-and-view-name" title="Permalink to this headline">¶</a></h1>
@@ -126,6 +126,23 @@ access, or not. And this is done with view name and application name (or
 namespaces), only request argument is needed.</p>
 <p>This is important if your site have a middleware that change the request.</p>
 </div>
+<div class="section" id="template-tag">
+<h1>Template Tag<a class="headerlink" href="#template-tag" title="Permalink to this headline">¶</a></h1>
+<p>For using Django roles template tag:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">load</span> <span class="n">roles_tags</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">...</span>
+<span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">|</span><span class="n">check_role</span><span class="p">:</span><span class="s1">&#39;reports_menu&#39;</span> <span class="o">%</span><span class="p">}</span>
+    <span class="n">check_access</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Is required to configure a DjangoTemplate backend in <em>settings</em> file. If not,
+when trying to use it, an exception will be raised:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">django</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ImproperlyConfigured</span><span class="p">:</span> <span class="n">No</span> <span class="n">DjangoTemplates</span> <span class="n">backend</span> <span class="ow">is</span>
+<span class="n">configured</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
 
 
           </div>
@@ -143,6 +160,7 @@ namespaces), only request argument is needed.</p>
 <li><a class="reference internal" href="#without-configuration">Without configuration</a></li>
 <li><a class="reference internal" href="#namespaces-and-view-name">Namespaces and View Name</a></li>
 <li><a class="reference internal" href="#arguments">Arguments</a></li>
+<li><a class="reference internal" href="#template-tag">Template Tag</a></li>
 </ul>
 
   <h4>Previous topic</h4>
@@ -173,7 +191,7 @@ namespaces), only request argument is needed.</p>
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Jan 04, 2019</p>
+              <p class="topless">Feb 01, 2019</p>
           </div>
         
       

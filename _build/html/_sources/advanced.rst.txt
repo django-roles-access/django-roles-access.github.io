@@ -21,9 +21,9 @@ possible type of access to be set:
 Without configuration
 =====================
 If an application is not declared as any of the others, but there is an
-:class:`roles.models.ViewAccess` object associated for an application's view,
-and the view is protected with decorator or middleware is being used,
-ViewAccess object will be used to restrict the access.
+:class:`roles.models.ViewAccess` object associated to a view belonging to that
+application and the view is protected with decorator or middleware is being
+used ViewAccess object will be used to restrict the access.
 
 
 .. _`Namespace and View Name`:
@@ -62,4 +62,26 @@ access, or not. And this is done with view name and application name (or
 namespaces), only request argument is needed.
 
 This is important if your site have a middleware that change the request.
+
+
+============
+Template Tag
+============
+
+For using Django roles template tag:
+::
+
+    {% load roles_tags %}
+    ...
+    {% if request.user|check_role:'reports_menu' %}
+        check_access
+    {% endif %}
+
+
+Is required to configure a DjangoTemplate backend in *settings* file. If not,
+when trying to use it, an exception will be raised:
+::
+
+    django.core.exceptions.ImproperlyConfigured: No DjangoTemplates backend is
+    configured.
 
