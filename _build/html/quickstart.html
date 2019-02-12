@@ -84,21 +84,29 @@
 <p>Django roles is an application for securing a Django site by controlling
 access to views.</p>
 <p>Permissions to access views are given to
-<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a>, and they can be interpreted as roles.
-Is also possible to change a view access security at run time.</p>
+<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a>, and they can be interpreted as roles.
+Is also possible to change a view access security at run time. This last
+feature is key in Django roles. While other solutions offer different ways for
+securing Django sites, including with roles, they require to hard-code part of
+their configuration as part of the development and/or execute commands in
+Python interpreter. Django roles only requires to config <em>settings.py</em> as any
+other snippet (at least to add the installed app). Once the setup is done, all
+access to view is administrated from <em>admin site</em>. In this way there is no need
+to change code or configuration if new security requirement appear or
+change.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The installation and use of <em>Django roles</em> will not have any effect in views
 with already restricted access. For example, a view restricted with
-decorator <a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/auth/default/#django.contrib.auth.decorators.login_required" title="(in Django v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">django.contrib.auth.decorators.login_required()</span></code></a>
+decorator <a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/auth/default/#django.contrib.auth.decorators.login_required" title="(in Django v3.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">django.contrib.auth.decorators.login_required()</span></code></a>
 will remain having the restriction plus the new restrictions added by
 Django roles</p>
 </div>
 </div>
 <div class="section" id="requirements">
 <h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
-<p>Django roles use <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a>,
-<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.User</span></code></a> and <em>view names</em> to control access
+<p>Django roles use <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a>,
+<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.User</span></code></a> and <em>view names</em> to control access
 to views. Also <em>Django admin interface</em> in necessary to create and administrate
 <em>view control access</em> (<a class="reference internal" href="reference.html#django_roles.models.ViewAccess" title="django_roles.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles.models.ViewAccess</span></code></a>).</p>
 <p>So Django roles is dependent of <em>Django admin site</em> and because of this it has
@@ -132,7 +140,7 @@ official documentation: <a class="reference external" href="https://docs.djangop
 <p class="last">Once Django roles is installed, by default all Django sites views keeps their
 <strong>access status</strong>. If they were public, they will remain
 being public. If they were restricted by some logic (like
-<a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/auth/default/#django.contrib.auth.decorators.login_required" title="(in Django v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">django.contrib.auth.decorators.login_required()</span></code></a>), they will keep
+<a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/auth/default/#django.contrib.auth.decorators.login_required" title="(in Django v3.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">django.contrib.auth.decorators.login_required()</span></code></a>), they will keep
 restricted by the same logic.</p>
 </div>
 </div>
@@ -149,9 +157,9 @@ restricted by the same logic.</p>
 <li>In <strong>type</strong> select the <em>access type</em> for the view:<ul>
 <li><strong>Public</strong>: Any visitor can access the view.</li>
 <li><strong>Authorized</strong>: Only authorized (logged)
-<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.User</span></code></a> can access the view.</li>
-<li><strong>By roles</strong>: Only <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.User</span></code></a> belonging to
-any <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a> added to <em>roles</em> attribute
+<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.User</span></code></a> can access the view.</li>
+<li><strong>By roles</strong>: Only <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.User</span></code></a> belonging to
+any <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a> added to <em>roles</em> attribute
 will access the view.</li>
 </ul>
 </li>
@@ -162,7 +170,7 @@ to the view.</li>
 </div>
 <div class="section" id="step-2">
 <h3>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h3>
-<p>The second step is about using <a class="reference internal" href="reference.html#django_roles.decorators.access_by_role" title="django_roles.decorators.access_by_role"><code class="xref py py-func docutils literal notranslate"><span class="pre">django_roles.decorators.access_by_role()</span></code></a>
+<p>The second step is about using <code class="xref py py-func docutils literal notranslate"><span class="pre">django_roles.decorators.access_by_role()</span></code>
 decorator to decorate the view you want to secure.
 For example:</p>
 <p>In case the view is a function::</p>
@@ -238,7 +246,7 @@ For example:</p>
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Jan 08, 2019</p>
+              <p class="topless">Feb 12, 2019</p>
           </div>
         
       

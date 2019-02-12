@@ -7,7 +7,15 @@ access to views.
 
 Permissions to access views are given to
 :class:`django.contrib.auth.models.Group`, and they can be interpreted as roles.
-Is also possible to change a view access security at run time.
+Is also possible to change a view access security at run time. This last
+feature is key in Django roles. While other solutions offer different ways for
+securing Django sites, including with roles, they require to hard-code part of
+their configuration as part of the development and/or execute commands in
+Python interpreter. Django roles only requires to config *settings.py* as any
+other snippet (at least to add the installed app). Once the setup is done, all
+access to view is administrated from *admin site*. In this way there is no need
+to change code or configuration if new security requirement appear or
+change.
 
 
 .. note::
