@@ -111,28 +111,30 @@ raised.</p>
 <li>All views are collected and grouped by application. In the created report
 this step si called <strong>gathering information</strong>.</li>
 <li>Is checked if Django roles middleware is active or not. When active the
-report is reported as <strong>Django roles active for site</strong>. When is not active
-is reported as <strong>Django roles not active for site</strong>. Also analysis will keep
-track of this state in it’s <strong>site_active</strong> variable.</li>
+report will indicate <strong>Django roles active for site</strong>. When not active it
+will br reported as <strong>Django roles not active for site</strong>. Also analysis will
+keep track of this state in it’s <strong>site_active</strong> variable.</li>
 <li>For each installed application (settings.INSTALLED_APPLICATION) is checked
 if the application was classified as explained in
 <a class="reference internal" href="middleware.html#applications-type"><span class="std std-ref">Applications type</span></a>. The result of this is reported to standard output.</li>
-<li>For each view of the analyzed application selected in step 2, is checked
-the access security by analyze declared callable for the view. This analysis
-include:<ul>
-<li>Search for any <em>django.contrib.auth.decorators</em></li>
-<li>Evaluate if view</li>
+<li>For each view of the analyzed application selected in step 3, is checked
+the access security by analyzing the callable associated with the view. This
+analysis include:<ul>
+<li>Search for any <code class="docutils literal notranslate"><span class="pre">django.contrib.auth.decorators</span></code>.</li>
+<li>Evaluate if view is decorated with <code class="docutils literal notranslate"><span class="pre">django_roles</span></code> decorator or if mixin
+was used. Then is searched <a class="reference internal" href="reference.html#django_roles.models.ViewAccess" title="django_roles.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles.models.ViewAccess</span></code></a>
+object for the view. And finally taking in consideration if <strong>site_active</strong>
+is True or not, an access security status is concluded.</li>
 </ul>
 </li>
-<li>Report from selected view report will indicate:<ul>
+<li>Report from selected view will indicate:<ul>
 <li>View Name.</li>
 <li>Declared URL.</li>
 <li>Access security status.</li>
 </ul>
 </li>
 </ol>
-<p>The last of all <strong>Access security status</strong> is concluded by result of step 4
-when <em>django.contrib.auth.decorators</em></p>
+<p>The last of all <strong>Access security status</strong> is concluded by work done in step 4.</p>
 </div>
 </div>
 
