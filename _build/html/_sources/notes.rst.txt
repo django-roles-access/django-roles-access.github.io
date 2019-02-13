@@ -41,7 +41,7 @@ The main
 
 With group_required decorator https://djangosnippets.org/snippets/1703/ is
 possible to implement security with Groups. But this snippet require to
-hardcode the required group.
+hardcoded the required group.
 
 
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Notes &#8212; Django roles 0.1 documentation</title>
+    <title>Check view access &#8212; Django roles 0.1 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Example" href="example.html" />
-    <link rel="prev" title="Reference" href="reference.html" />
+    <link rel="next" title="Levels of access to applications" href="advanced.html" />
+    <link rel="prev" title="Using Django roles middleware" href="middleware.html" />
 
 
 
@@ -67,47 +67,72 @@
         <a title="Module index" href="py-modindex.html">Modules</a>
       </div>
       <div class="nav">
-    &laquo; <a href="reference.html" title="Reference">previous</a>
+    &laquo; <a href="middleware.html" title="Using Django roles middleware">previous</a>
      |
     <a title="Django roles 0.1 documentation" href="index.html" accesskey="U">up</a>
    |
-    <a href="example.html" title="Example">next</a> &raquo;</div>
+    <a href="advanced.html" title="Levels of access to applications">next</a> &raquo;</div>
     </div>
 
     <div id="bd">
       <div id="yui-main">
         <div class="yui-b">
-          <div class="yui-g" id="notes">
+          <div class="yui-g" id="checkviewaccess">
             
-  <div class="section" id="notes">
-<h1>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="other-middleware">
-<h2>Other middleware<a class="headerlink" href="#other-middleware" title="Permalink to this headline">¶</a></h2>
-<p>Django documentation explain the algorithm the system follows to determine which
-Python code to execute <a class="reference external" href="https://docs.djangoproject.com/en/dev/topics/http/urls/#how-django-processes-a-request">django_algorithm</a>:</p>
+  <div class="section" id="check-view-access">
+<h1>Check view access<a class="headerlink" href="#check-view-access" title="Permalink to this headline">¶</a></h1>
+<p>Django roles register an action with manage.py:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">checkviewaccess</span>
+</pre></div>
+</div>
+<p>This action will analyze all reachable views from settings.ROOT_URLCONF and
+print to standard output a <em>security report</em> of access to each view.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Django documentation explain the algorithm the system follows to determine
+which Python code to execute <a class="reference external" href="https://docs.djangoproject.com/en/dev/topics/http/urls/#how-django-processes-a-request">django_algorithm</a>:</p>
 <p>… but if the incoming HttpRequest object has a urlconf attribute (set by
-middleware), its value will be used in place of the ROOT_URLCONF setting. …</p>
-<p>Django Roles <em>checkviewaccess</em> takes from ROOT_URLCONF the root for all site’s
-views. If an installed middleware change this root, the management command
-may not work as expected.</p>
-<p>Django Roles middleware will not change ROOT_URLCONF or any other attribute
-of the HTTPRequest or HTTPResponse (except for the last one when access
-denied is raised).</p>
+middleware), its value will be used in place of the ROOT_URLCONF setting.
+…</p>
+<p class="last">Django Roles <em>checkviewaccess</em> takes from ROOT_URLCONF the root for all
+site’s views. If an installed middleware change this root, registered
+action may not work as expected.</p>
 </div>
-<div class="section" id="other-considerations">
-<h2>Other considerations<a class="headerlink" href="#other-considerations" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="why-is-not-used-user-passes-test">
-<h3>Why is not used user_passes_test()?<a class="headerlink" href="#why-is-not-used-user-passes-test" title="Permalink to this headline">¶</a></h3>
-<p>Because the callable receive the user as argument, while Django Roles also
-need to know the view being accessed.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Django Roles middleware do not change ROOT_URLCONF or any other attribute
+of the HTTPRequest. HTTPResponse is changed only when access denied is
+raised.</p>
 </div>
-<div class="section" id="comparatives-with-other-solutions">
-<h3>Comparatives with other solutions<a class="headerlink" href="#comparatives-with-other-solutions" title="Permalink to this headline">¶</a></h3>
-<p>The main</p>
-<p>With group_required decorator <a class="reference external" href="https://djangosnippets.org/snippets/1703/">https://djangosnippets.org/snippets/1703/</a> is
-possible to implement security with Groups. But this snippet require to
-hardcoded the required group.</p>
-</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>The used analysis follow next algorithm:</p>
+<ol class="arabic simple">
+<li>All views are collected and grouped by application. In the created report
+this step si called <strong>gathering information</strong>.</li>
+<li>Is checked if Django roles middleware is active or not. When active the
+report is reported as <strong>Django roles active for site</strong>. When is not active
+is reported as <strong>Django roles not active for site</strong>. Also analysis will keep
+track of this state in it’s <strong>site_active</strong> variable.</li>
+<li>For each installed application (settings.INSTALLED_APPLICATION) is checked
+if the application was classified as explained in
+<a class="reference internal" href="middleware.html#applications-type"><span class="std std-ref">Applications type</span></a>. The result of this is reported to standard output.</li>
+<li>For each view of the analyzed application selected in step 2, is checked
+the access security by analyze declared callable for the view. This analysis
+include:<ul>
+<li>Search for any <em>django.contrib.auth.decorators</em></li>
+<li>Evaluate if view</li>
+</ul>
+</li>
+<li>Report from selected view report will indicate:<ul>
+<li>View Name.</li>
+<li>Declared URL.</li>
+<li>Access security status.</li>
+</ul>
+</li>
+</ol>
+<p>The last of all <strong>Access security status</strong> is concluded by result of step 4
+when <em>django.contrib.auth.decorators</em></p>
 </div>
 </div>
 
@@ -123,27 +148,22 @@ hardcoded the required group.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Notes</a><ul>
-<li><a class="reference internal" href="#other-middleware">Other middleware</a></li>
-<li><a class="reference internal" href="#other-considerations">Other considerations</a><ul>
-<li><a class="reference internal" href="#why-is-not-used-user-passes-test">Why is not used user_passes_test()?</a></li>
-<li><a class="reference internal" href="#comparatives-with-other-solutions">Comparatives with other solutions</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Check view access</a><ul>
+<li><a class="reference internal" href="#analysis">Analysis</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="reference.html"
-                        title="previous chapter">Reference</a></p>
+  <p class="topless"><a href="middleware.html"
+                        title="previous chapter">Using Django roles middleware</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="example.html"
-                        title="next chapter">Example</a></p>
+  <p class="topless"><a href="advanced.html"
+                        title="next chapter">Levels of access to applications</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/notes.rst.txt"
+      <li><a href="_sources/checkviewaccess.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -170,11 +190,11 @@ hardcoded the required group.</p>
 
     <div id="ft">
       <div class="nav">
-    &laquo; <a href="reference.html" title="Reference">previous</a>
+    &laquo; <a href="middleware.html" title="Using Django roles middleware">previous</a>
      |
     <a title="Django roles 0.1 documentation" href="index.html" accesskey="U">up</a>
    |
-    <a href="example.html" title="Example">next</a> &raquo;</div>
+    <a href="advanced.html" title="Levels of access to applications">next</a> &raquo;</div>
     </div>
   </div>
 

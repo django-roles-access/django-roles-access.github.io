@@ -23,6 +23,17 @@ Middleware
 
    middleware
 
+=================
+Check view access
+=================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+
+   checkviewaccess
+
 ===============
 Advanced topics
 ===============
