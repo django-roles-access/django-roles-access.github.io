@@ -111,9 +111,9 @@ raised.</p>
 <li>All views are collected and grouped by application. In the created report
 this step si called <strong>gathering information</strong>.</li>
 <li>Is checked if Django roles middleware is active or not. When active the
-report will indicate <strong>Django roles active for site</strong>. When not active it
-will br reported as <strong>Django roles not active for site</strong>. Also analysis will
-keep track of this state in it’s <strong>site_active</strong> variable.</li>
+report will indicate <strong>Django roles active for site: True</strong>. When not
+active it will br reported as <strong>Django roles active for site: False</strong>. Also
+analysis will keep track of this state in it’s <strong>site_active</strong> variable.</li>
 <li>For each installed application (settings.INSTALLED_APPLICATION) is checked
 if the application was classified as explained in
 <a class="reference internal" href="middleware.html#applications-type"><span class="std std-ref">Applications type</span></a>. The result of this is reported to standard output.</li>

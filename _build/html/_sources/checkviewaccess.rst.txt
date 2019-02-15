@@ -42,9 +42,9 @@ The used analysis follow next algorithm:
    this step si called **gathering information**.
 
 2. Is checked if Django roles middleware is active or not. When active the
-   report will indicate **Django roles active for site**. When not active it
-   will br reported as **Django roles not active for site**. Also analysis will
-   keep track of this state in it's **site_active** variable.
+   report will indicate **Django roles active for site: True**. When not
+   active it will br reported as **Django roles active for site: False**. Also
+   analysis will keep track of this state in it's **site_active** variable.
 
 3. For each installed application (settings.INSTALLED_APPLICATION) is checked
    if the application was classified as explained in
@@ -69,5 +69,5 @@ The used analysis follow next algorithm:
 
    * Access security status.
 
-The last of all **Access security status** is concluded by work done in step 4. 
+The last of all **Access security status** is concluded by work done in step 4.
 
