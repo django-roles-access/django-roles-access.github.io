@@ -54,12 +54,15 @@ The used analysis follow next algorithm:
    the access security by analyzing the callable associated with the view. This
    analysis include:
 
-   * Search for any ``django.contrib.auth.decorators``.
+   * Evaluate if view is decorated with ``django_roles`` decorator, or if mixin
+     was used.
 
-   * Evaluate if view is decorated with ``django_roles`` decorator or if mixin
-     was used. Then is searched :class:`django_roles.models.ViewAccess`
-     object for the view. And finally taking in consideration if **site_active**
-     is True or not, an access security status is concluded.
+   * Search any :class:`django_roles.models.ViewAccess` object for the view.
+
+   * Take in consideration if **site_active** is True or not.
+
+   * Take in consideration the :ref:`Applications type` of the application
+     holding the view.
 
 5. Report from selected view will indicate:
 
@@ -69,5 +72,30 @@ The used analysis follow next algorithm:
 
    * Access security status.
 
-The last of all **Access security status** is concluded by work done in step 4.
+The used method to determine **Access security status** of a view is:
 
+1. A :class:`django_roles.models.ViewAccess` object is searched for the view.
+
+2. If **site_active** is True:
+
+   a. If an object was found in step 1, object security is reported for the
+      view.
+
+   b. If no object was found; default behavior for view's application is
+      reported as explained in :ref:`Applications type`.
+
+   c. If no object was found in step 1. And no application type is
+      defined for view's application (or view has no application defined). An
+      ERROR of configuration is reported.
+
+3. If **site_active** is False and ``django_roles`` decorator or mixin was used:
+
+  a. In case exist object found in step 1, object security is reported.
+
+  b. In case no object were found in step 1. And view's application has a
+     type as defined in :ref:`Applications type`. Default behavior for the
+     application type is reported as view access security.
+
+  c. In case no object were found in step 1. And no application type is
+     defined for view's application (or view has no application defined). An
+     ERROR of configuration is reported.
