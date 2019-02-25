@@ -32,6 +32,30 @@ print to standard output a *security report* of access to each view.
    of the HTTPRequest. HTTPResponse is changed only when access denied is
    raised.
 
+--------------
+Roles security
+--------------
+
+It is also possible to use ``checkviewaccess`` using a role name (
+:class:`django.contrib.auth.models.Group` name) for getting all views where
+such role have access:
+::
+
+    python manage.py checkviewaccess <role_name>
+
+
+--------------
+Views security
+--------------
+
+If in place of role name, ``checkviewaccess`` is used with a view name, It
+will report the configured access to the view (configured with Django roles
+tools):
+::
+
+    python manage.py checkviewaccess <view_name>
+
+
 --------
 Analysis
 --------
@@ -72,6 +96,10 @@ The used analysis follow next algorithm:
 
    * Access security status.
 
+------
+Method
+------
+
 The used method to determine **Access security status** of a view is:
 
 1. A :class:`django_roles.models.ViewAccess` object is searched for the view.
@@ -79,7 +107,8 @@ The used method to determine **Access security status** of a view is:
 2. If **site_active** is True:
 
    a. If an object was found in step 1, object security is reported for the
-      view.
+      view. If object security is type `By role` and no roles were added an
+      ERROR is reported (no one, except superuser, can access de view).
 
    b. If no object was found; default behavior for view's application is
       reported as explained in :ref:`Applications type`.
@@ -90,12 +119,12 @@ The used method to determine **Access security status** of a view is:
 
 3. If **site_active** is False and ``django_roles`` decorator or mixin was used:
 
-  a. In case exist object found in step 1, object security is reported.
+   a. In case exist object found in step 1, object security is reported.
 
-  b. In case no object were found in step 1. And view's application has a
-     type as defined in :ref:`Applications type`. Default behavior for the
-     application type is reported as view access security.
+   b. In case no object were found in step 1. And view's application has a
+      type as defined in :ref:`Applications type`. Default behavior for the
+      application type is reported as view access security.
 
-  c. In case no object were found in step 1. And no application type is
-     defined for view's application (or view has no application defined). An
-     ERROR of configuration is reported.
+   c. In case no object were found in step 1. And no application type is
+      defined for view's application (or view has no application defined). An
+      ERROR of configuration is reported.
