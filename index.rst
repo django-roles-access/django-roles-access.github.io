@@ -34,6 +34,17 @@ Check view access
 
    checkviewaccess
 
+============
+Template tag
+============
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+
+   template_tag
+
 ===============
 Advanced topics
 ===============
