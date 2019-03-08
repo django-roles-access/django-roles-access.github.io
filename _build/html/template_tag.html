@@ -15,8 +15,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Levels of access to applications" href="advanced.html" />
-    <link rel="prev" title="Check view access" href="checkviewaccess.html" />
+    <link rel="next" title="Reference" href="reference.html" />
+    <link rel="prev" title="Levels of access to applications" href="advanced.html" />
 
 
 
@@ -67,11 +67,11 @@
         <a title="Module index" href="py-modindex.html">Modules</a>
       </div>
       <div class="nav">
-    &laquo; <a href="checkviewaccess.html" title="Check view access">previous</a>
+    &laquo; <a href="advanced.html" title="Levels of access to applications">previous</a>
      |
     <a title="Django roles 0.4 documentation" href="index.html" accesskey="U">up</a>
    |
-    <a href="advanced.html" title="Levels of access to applications">next</a> &raquo;</div>
+    <a href="reference.html" title="Reference">next</a> &raquo;</div>
     </div>
 
     <div id="bd">
@@ -81,7 +81,14 @@
             
   <div class="section" id="django-roles-template-tag">
 <h1>Django roles template tag<a class="headerlink" href="#django-roles-template-tag" title="Permalink to this headline">¶</a></h1>
-<p>Django roles template tag is</p>
+<p>Django roles <em>template tag</em> is a method to restrict access by role to content.</p>
+<p><code class="docutils literal notranslate"><span class="pre">django_roles</span></code> decorator, mixin or middleware restrict access to a
+view. In this way, restriction is applied to all content of the view. With
+<code class="docutils literal notranslate"><span class="pre">django_roles</span></code> <em>template tag</em> is possible to restrict access to portions of
+content of a view.</p>
+<p>As the name could suggest, <em>template tag</em> is used in Django templates. An
+example of use could be to create dynamic menu, where some menu appears to user
+or not depending in his role.</p>
 <p>For using Django roles template tag:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">load</span> <span class="n">roles_tags</span> <span class="o">%</span><span class="p">}</span>
 <span class="o">...</span>
@@ -109,11 +116,11 @@ when trying to use it, an exception will be raised:</p>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="checkviewaccess.html"
-                        title="previous chapter">Check view access</a></p>
-  <h4>Next topic</h4>
   <p class="topless"><a href="advanced.html"
-                        title="next chapter">Levels of access to applications</a></p>
+                        title="previous chapter">Levels of access to applications</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="reference.html"
+                        title="next chapter">Reference</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -136,7 +143,7 @@ when trying to use it, an exception will be raised:</p>
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Feb 28, 2019</p>
+              <p class="topless">Mar 01, 2019</p>
           </div>
         
       
@@ -144,11 +151,11 @@ when trying to use it, an exception will be raised:</p>
 
     <div id="ft">
       <div class="nav">
-    &laquo; <a href="checkviewaccess.html" title="Check view access">previous</a>
+    &laquo; <a href="advanced.html" title="Levels of access to applications">previous</a>
      |
     <a title="Django roles 0.4 documentation" href="index.html" accesskey="U">up</a>
    |
-    <a href="advanced.html" title="Levels of access to applications">next</a> &raquo;</div>
+    <a href="reference.html" title="Reference">next</a> &raquo;</div>
     </div>
   </div>
 

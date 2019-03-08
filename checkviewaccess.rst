@@ -148,30 +148,6 @@ When application has no configured type is reported as `app_name has no type`
 `app_name is SECURED type`.
 
 
---------------
-Roles security
---------------
-
-It is also possible to use ``checkviewaccess`` using a role name (
-:class:`django.contrib.auth.models.Group` name) for getting all views where
-such role have access:
-::
-
-    python manage.py checkviewaccess <role_name>
-
-
---------------
-Views security
---------------
-
-If in place of role name, ``checkviewaccess`` is used with a view name, It
-will report the configured access to the view (configured with Django roles
-tools):
-::
-
-    python manage.py checkviewaccess <view_name>
-
-
 --------
 Analysis
 --------
