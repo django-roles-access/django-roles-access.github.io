@@ -1,31 +1,41 @@
-================================
-Levels of access to applications
-================================
+.. _basic-concepts:
 
-Mainly django-roles is about setting roles access to views. This is done in
-Admin creating an :class:`ViewAccess` object for each view. There are 3
-possible type of access to be set:
+--------------
+Basic concepts
+--------------
+``django_roles`` implements it's core *roles* with
+:class:`django.contrib.auth.models.Group`. This means that
+:mod:`django.contrib.auth` must be listed in :django:setting:`INSTALLED_APPS`.
 
-* Public: Any user can access the view.
+This could be an extra effort if you just want to grant a
+:class:`django.contrib.auth.models.User` access to a view.
+For example in case where only a particular user must be the only one in
+access a particular view. To solve this you can create a new
+:class:`django.contrib.auth.models.Group` and named it in such a way you
+reflect this particular case.
 
-* Authorized: Only authorized :class:`django.contrib.auth.User` can access
-  the view. Is equivalent to
-  :func:`django.contrib.auth.decorators.login_required`.
+In general there are, from security point of view, two kind of applications:
 
-* By roles: Only :class:`django.contrib.auth.User` belonging to
-  :class:`django.contrib.auth.Group` that has been granted access to the
-  view can access the view.
+* **Simple**: This kind of sites requires user to be logged in some views.
+  This is the case when @login_required is used.
 
+* **Heavy**: This kind of sites requires user to be logged in almost all
+  views. The use of @login_required became impractical or at least tedious.
 
-=====================
-Without configuration
-=====================
-If an application is not declared as any of the others, but there is an
-:class:`roles.models.ViewAccess` object associated to a view belonging to that
-application and the view is protected with decorator or middleware is being
-used ViewAccess object will be used to restrict the access.
+Django Roles could work in to ways depending in site's security requirements
+as explained: simple or heave:
 
+* **With function/decorator**: For this cases Django Roles provides a
+  decorator or function to check security.
 
+* **With middleware**: When a site requires user to be logged in almost all
+  views. Django Roles offers a middleware to free you of the need of using the
+  mentioned decorator.
+
+For any of the cases (function/decorator or middleware) Django Roles is used
+equally.
+
+.. _`Naming URL`: https://docs.djangoproject.com/en/dev/topics/http/urls/#naming-url-patterns
 .. _`Namespace and View Name`:
 
 ========================
@@ -40,34 +50,7 @@ attribute can be:
 * `namespace:view_name`
 * `nest_namespace:namespace:view_name`
 
-
-#TODO: Check how official doc talk about this and link.
-URLConf configuration (*urls.py*) gives the possible values. As also
-URLConf configuration is used by Django to serve Site's URL.
-
-???The value of *ROOT_URLCONF* is used to know all possible views.???
-
-
-
-=========
-Arguments
-=========
-
-Django-roles do not take view's arguments into consideration. This is true
-except for request argument (key in Django-roles works).
-
-As Django's URL dispatcher found a match (with or without regex to solve) the
-view is called. When the view is called is when Django-roles start to grant
-access, or not. And this is done with view name and application name (or
-namespaces), only request argument is needed.
-
-This is important if your site have a middleware that change the request.
-
-
-==============================
-Views without application name
-==============================
-
-When a views have no application associated, they will be classified in a
-group under application name equal to constant
-*django_roles.utils.APP_NAME_FOR_NONE*
+As this are the only possible value for **view** attribute, a requirement of
+``django_roles`` is to use *view names* and *app_name* in *urls.py* files.
+Read more about Naming URL in official Django project documentation
+`Naming URL`_.

@@ -7,14 +7,16 @@ Example
 -----------------------------
 Create example Django project
 -----------------------------
-This tutorial will explain how to use Django-Roles. For this is necessary a
-simple Django project and application. With the spirit of standard this
-tutorial use Django's documentation *polls* example. This example can be found
+
+This tutorial will explain how to use ``django_roles``. For this is necessary a
+simple Django project and application. This tutorial use Django's
+documentation *polls* example. This example can be found
 at Django_example_.
 
 .. _Django_example: https://docs.djangoproject.com/en/2.0/intro/tutorial01/
 
-.. _create-proyect-and-application:
+.. _create-project-and-application:
+
 
 1 Create project and application
 ================================

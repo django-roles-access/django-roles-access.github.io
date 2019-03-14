@@ -9,9 +9,7 @@ view. In this way, restriction is applied to all content of the view. With
 ``django_roles`` *template tag* is possible to restrict access to portions of
 content of a view.
 
-As the name could suggest, *template tag* is used in Django templates. An
-example of use could be to create dynamic menu, where some menu appears to user
-or not depending in his role.
+As the name could suggest, *template tag* is used in Django templates.
 
 For using Django roles template tag:
 ::
@@ -19,9 +17,12 @@ For using Django roles template tag:
     {% load roles_tags %}
     ...
     {% if request.user|check_role:'reports_menu' %}
-        check_access
+        restricted content
     {% endif %}
 
+If exist :class:`django_roles.models.TemplateAccess` object with name
+*reports_menu*; only users in added :class:`django.contrib.auth.models.Group`
+will see **restricted content**.
 
 Is required to configure a DjangoTemplate backend in *settings* file. If not,
 when trying to use it, an exception will be raised:
