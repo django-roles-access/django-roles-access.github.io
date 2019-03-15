@@ -34,9 +34,9 @@ Check view access
 
    checkviewaccess
 
-============
-Template tag
-============
+===================
+Content access tool
+===================
 
 .. toctree::
    :maxdepth: 2
@@ -55,16 +55,6 @@ Advanced topics
 
    advanced
 
-=========
-Reference
-=========
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   reference
-
 ========
 Examples
 ========
@@ -74,6 +64,16 @@ Examples
    :caption: Contents:
 
    example
+
+=========
+Reference
+=========
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   reference
 
 ==================
 Indices and tables

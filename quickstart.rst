@@ -58,6 +58,9 @@ official documentation: `Django admin site`_.
 
 .. _`Django admin site`: https://docs.djangoproject.com/en/dev/ref/contrib/admin/
 
+Last requirement is to give names in *urls.py* files to views and
+applications. Read more about this in :ref:`Required views and app name`.
+
 .. _`Quick start`:
 
 ===========
@@ -159,26 +162,16 @@ In case of classes based views use mixin:
 
         ...
 
+.. note::
+
+   When user has no access to a view, by default ``django_roles`` response with
+   :class:`django.http.HttpResponseForbidden`.
 
 .. note::
 
    Pre existent security behavior can be modified if a ``django_role``
    configuration for the same view results in forbidden access.
 
-======
-Result
-======
 
-By default ``django_roles`` response with
-:class:`django.http.HttpResponseForbidden` when the user has no access to the
-view. This behavior can be changed, for this add in *settings files* a new
-attribute `DJANGO_ROLES_REDIRECT` with a value equal to True:
-::
 
-    ...
-    DJANGO_ROLES_REDIRECT = True
-    ...
 
-The answer given to a user without access is a
-:class:`django.http.HttpResponseRedirect` to the address configured in
-*settings.LOGIN_URL*.

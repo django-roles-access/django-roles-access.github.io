@@ -125,6 +125,8 @@ necessary to create and administrate <em>views access</em>
 So Django roles is dependent of <em>Django admin site</em> and because of this it has
 the same requirements than it. This can be checked in the
 official documentation: <a class="reference external" href="https://docs.djangoproject.com/en/dev/ref/contrib/admin/">Django admin site</a>.</p>
+<p>Last requirement is to give names in <em>urls.py</em> files to views and
+applications. Read more about this in <a class="reference internal" href="advanced.html#required-views-and-app-name"><span class="std std-ref">Required views and app name</span></a>.</p>
 </div>
 <div class="section" id="quick-start">
 <span id="id1"></span><h1>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
@@ -188,7 +190,7 @@ whose members will access the view.</li>
 <div class="section" id="step-2">
 <h3>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h3>
 <p>Use <code class="xref py py-func docutils literal notranslate"><span class="pre">django_roles.decorators.access_by_role()</span></code> decorator or
-<code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles.mixin.RolesMixin</span></code> mixin in the view to be secured.</p>
+<a class="reference internal" href="reference.html#django_roles.mixin.RolesMixin" title="django_roles.mixin.RolesMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles.mixin.RolesMixin</span></code></a> mixin in the view to be secured.</p>
 <p>For example:</p>
 <p>In case the view is a function:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django_roles.decorators</span> <span class="k">import</span> <span class="n">access_by_role</span>
@@ -208,26 +210,16 @@ whose members will access the view.</li>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
+<p class="last">When user has no access to a view, by default <code class="docutils literal notranslate"><span class="pre">django_roles</span></code> response with
+<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/request-response/#django.http.HttpResponseForbidden" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.http.HttpResponseForbidden</span></code></a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
 <p class="last">Pre existent security behavior can be modified if a <code class="docutils literal notranslate"><span class="pre">django_role</span></code>
 configuration for the same view results in forbidden access.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="result">
-<h1>Result<a class="headerlink" href="#result" title="Permalink to this headline">¶</a></h1>
-<p>By default <code class="docutils literal notranslate"><span class="pre">django_roles</span></code> response with
-<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/request-response/#django.http.HttpResponseForbidden" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.http.HttpResponseForbidden</span></code></a> when the user has no access to the
-view. This behavior can be changed, for this add in <em>settings files</em> a new
-attribute <cite>DJANGO_ROLES_REDIRECT</cite> with a value equal to True:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
-<span class="n">DJANGO_ROLES_REDIRECT</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="o">...</span>
-</pre></div>
-</div>
-<p>The answer given to a user without access is a
-<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/request-response/#django.http.HttpResponseRedirect" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.http.HttpResponseRedirect</span></code></a> to the address configured in
-<em>settings.LOGIN_URL</em>.</p>
 </div>
 
 
@@ -256,7 +248,6 @@ attribute <cite>DJANGO_ROLES_REDIRECT</cite> with a value equal to True:</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#result">Result</a></li>
 </ul>
 
   <h4>Previous topic</h4>
@@ -287,7 +278,7 @@ attribute <cite>DJANGO_ROLES_REDIRECT</cite> with a value equal to True:</p>
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Mar 14, 2019</p>
+              <p class="topless">Mar 15, 2019</p>
           </div>
         
       

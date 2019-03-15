@@ -27,7 +27,7 @@ django.setup()
 # -- Project information -----------------------------------------------------
 
 project = 'Django roles'
-copyright = '2018, Vicente Ramos Garcia'
+copyright = '2019, Vicente Ramos Garcia'
 author = 'Vicente Ramos Garcia'
 
 # The short X.Y version
@@ -186,5 +186,6 @@ texinfo_documents = [
 intersphinx_mapping = {
     'python': ('http://docs.python.org/2.7', None),
     'sphinx': ('http://sphinx.pocoo.org/', None),
-    'django': ('http://docs.djangoproject.com/en/dev/', 'http://docs.djangoproject.com/en/dev/_objects/'),
+    'django': ('http://docs.djangoproject.com/en/dev/',
+               'http://docs.djangoproject.com/en/dev/_objects/'),
 }

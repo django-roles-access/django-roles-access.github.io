@@ -1,39 +1,37 @@
-.. _basic-concepts:
+.. _`Required views and app name`:
 
---------------
-Basic concepts
---------------
-``django_roles`` implements it's core *roles* with
-:class:`django.contrib.auth.models.Group`. This means that
-:mod:`django.contrib.auth` must be listed in :django:setting:`INSTALLED_APPS`.
+===========================
+Required views and app name
+===========================
 
-This could be an extra effort if you just want to grant a
-:class:`django.contrib.auth.models.User` access to a view.
-For example in case where only a particular user must be the only one in
-access a particular view. To solve this you can create a new
-:class:`django.contrib.auth.models.Group` and named it in such a way you
-reflect this particular case.
+One last requirement is to give names in *urls.py* files to views and
+applications.
 
-In general there are, from security point of view, two kind of applications:
+This is an implicit requirement if is expected to use all ``django_roles``
+characteristics. This is necessary because the value used by
+``django_roles`` to identify the views to be protected is it's name. Equally is
+necessary to name the app with ``app_name``. Examples of this can be found in
+Django project tutorial at `Namespacing URL names`_.
 
-* **Simple**: This kind of sites requires user to be logged in some views.
-  This is the case when @login_required is used.
+As with Django this requirement could be optional; but if it is planned to
+create :class:`django_roles.models.ViewAccess` object for a view, will be
+necessary to have a way to name the view so the object can be associated with
+it.
 
-* **Heavy**: This kind of sites requires user to be logged in almost all
-  views. The use of @login_required became impractical or at least tedious.
+In the same way, if it is planned to classify applications in different types as
+is explained in :ref:`Applications type` it will be necessary to name the
+application in *urls.py file*.
 
-Django Roles could work in to ways depending in site's security requirements
-as explained: simple or heave:
+.. _`Namespacing URL names`: https://docs.djangoproject.com/en/dev/intro/tutorial03/#namespacing-url-names
 
-* **With function/decorator**: For this cases Django Roles provides a
-  decorator or function to check security.
+.. warning::
 
-* **With middleware**: When a site requires user to be logged in almost all
-  views. Django Roles offers a middleware to free you of the need of using the
-  mentioned decorator.
+   ``django_roles`` use views names to associate
+   :class:`django_roles.models.ViewAccess` objects to the named view. And
+   applications names to group all views belonging to that application so is
+   possible to configure a type for the application and give it's views a
+   default security behavior.
 
-For any of the cases (function/decorator or middleware) Django Roles is used
-equally.
 
 .. _`Namespace and View Name`:
 
@@ -55,3 +53,39 @@ Read more about Naming URL in official Django project documentation
 `Naming URL`_.
 
 .. _`Naming URL`: https://docs.djangoproject.com/en/dev/topics/http/urls/#naming-url-patterns
+
+
+=====================
+Django roles response
+=====================
+
+When a user try to access a view and result a forbidden action, is possible
+to setup different responses to user.
+
+---------------------
+DJANGO_ROLES_REDIRECT
+---------------------
+
+By default ``django_roles`` response with
+:class:`django.http.HttpResponseForbidden` when the user has no access to the
+view. This behavior can be changed if add in *settings files* a new
+attribute `DJANGO_ROLES_REDIRECT` with a value equal to True:
+::
+
+    ...
+    DJANGO_ROLES_REDIRECT = True
+    ...
+
+The answer given to a user without access is a
+:class:`django.http.HttpResponseRedirect` to the address configured in
+*settings.LOGIN_URL*.
+
+------------------------------
+DJANGO_ROLES_FORBIDDEN_MESSAGE
+------------------------------
+
+When ``django_roles`` answer with HttpResponseForbidden, the message used by
+default is: ``<h1>403 Forbidden</h1>``; but this configuration can also be
+changed if add in *settings files* a new attribute
+`DJANGO_ROLES_FORBIDDEN_MESSAGE` with the wanted message to be returned
+instead of default one.
