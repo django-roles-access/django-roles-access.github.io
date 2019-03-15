@@ -30,8 +30,8 @@ will see **restricted content**.
    ``django_roles`` *template_tag* require DjangoTemplate backend to be
    configured in *settings file*. If not, when trying to use it, an exception
    will be raised:
-::
+   ::
 
-    django.core.exceptions.ImproperlyConfigured: No DjangoTemplates backend is
-    configured.
+       django.core.exceptions.ImproperlyConfigured: No DjangoTemplates
+       backend is configured.
 
