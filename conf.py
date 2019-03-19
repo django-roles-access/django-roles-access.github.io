@@ -26,7 +26,7 @@ django.setup()
 
 # -- Project information -----------------------------------------------------
 
-project = 'Django roles access'
+project = 'Django Roles Access'
 copyright = 'MIT Licence'
 author = 'Vicente Ramos Garcia'
 
