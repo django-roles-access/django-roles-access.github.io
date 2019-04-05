@@ -87,6 +87,16 @@ Reference
 
    reference
 
+=============
+Test coverage
+=============
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   coverage
+
 ==================
 Indices and tables
 ==================

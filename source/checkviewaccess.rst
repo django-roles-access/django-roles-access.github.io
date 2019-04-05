@@ -137,6 +137,30 @@ When application has no configured type is reported as `app_name has no type`
 example `app_name is SECURED type`.
 
 
+-------------
+Output format
+-------------
+
+Is possible to export site’s view access in csv format with the next columns:
+
+* App Name: Application name to which belong the view being reported.
+
+* Type: ['None','NOT_SECURED', 'PUBLIC', 'SECURED']
+
+* View Name: The name of the vie or blank.
+
+* Url: The regex (django 1.10 and django 1.11) or pattern (django 2+)
+
+* Status: Normal, Warning, Error.
+
+* Status description: If there is a description for the state it should be
+  reported here; eg cause of error or warning.
+
+.. code-block:: bash
+
+    python manage.py checkviewaccess --output-format csv
+
+
 --------
 Analysis
 --------

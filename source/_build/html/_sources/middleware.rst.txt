@@ -138,5 +138,5 @@ SECURED
 -------
 List of applications requiring at least the user to be *Authorized*
 
-Application classified as a SECURED application will require the user to be
-logged.
+As default behavior, application classified as a SECURED will require the user
+to be logged in.
