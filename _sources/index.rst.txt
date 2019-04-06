@@ -2,6 +2,12 @@
 Welcome to Django Roles Access documentation
 ============================================
 
+.. image:: https://travis-ci.org/django-roles-access/master.svg?branch=master
+    :target: https://travis-ci.org/django-roles-access/master
+
+.. image:: https://codecov.io/gh/django-roles-access/master/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/django-roles-access/master
+
 .. _`Source code at Github.com`: https://github.com/django-roles-access/master
 
 `Source code at Github.com`_
@@ -10,9 +16,6 @@ Welcome to Django Roles Access documentation
 
 `Package at PyPi`_
 
-.. _`Travis CI builds`: https://travis-ci.org/django-roles-access/master
-
-`Travis CI builds`_
 
 ===========
 Quick Start
