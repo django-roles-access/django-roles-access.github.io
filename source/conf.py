@@ -33,7 +33,7 @@ author = 'Vicente Ramos Garcia'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.8'
+release = '0.9'
 
 
 # -- General configuration ---------------------------------------------------
@@ -72,7 +72,7 @@ master_doc = 'index'
 # for a list of supported languages.
 #
 # This is also used if you do content translation via gettext catalogs.
-# Usually you set "language" from the command line for these cases.
+# Usually you set "language" from the _output line for these cases.
 language = None
 
 # List of patterns, relative to source directory, that match files and

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Check view access &#8212; Django Roles Access 0.8 documentation</title>
+    <title>Check view access &#8212; Django Roles Access 0.9 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -59,7 +59,7 @@
     <div class="document">
   <div id="custom-doc" class="yui-t6">
     <div id="hd">
-      <h1><a href="index.html">Django Roles Access 0.8 documentation</a></h1>
+      <h1><a href="index.html">Django Roles Access 0.9 documentation</a></h1>
       <div id="global-nav">
         <a title="Home page" href="index.html">Home</a>  |
         <a title="Table of contents" href="contents.html">Table of contents</a>  |
@@ -69,7 +69,7 @@
       <div class="nav">
     &laquo; <a href="middleware.html" title="Using Django roles access middleware">previous</a>
      |
-    <a title="Django Roles Access 0.8 documentation" href="index.html" accesskey="U">up</a>
+    <a title="Django Roles Access 0.9 documentation" href="index.html" accesskey="U">up</a>
    |
     <a href="template_tag.html" title="Django roles template tag">next</a> &raquo;</div>
     </div>
@@ -81,7 +81,7 @@
             
   <div class="section" id="check-view-access">
 <h1>Check view access<a class="headerlink" href="#check-view-access" title="Permalink to this headline">¶</a></h1>
-<p>Django roles access register an action with manage.py:</p>
+<p>Django roles access register an action with manage.py: <strong>checkviewaccess</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">checkviewaccess</span>
 </pre></div>
 </div>
@@ -106,12 +106,20 @@ denied is reached.</p>
 </div>
 <div class="section" id="security-report-format">
 <h2>Security report format<a class="headerlink" href="#security-report-format" title="Permalink to this headline">¶</a></h2>
-<p>Printed <em>security report</em> has format:</p>
+<p>Printed <em>security report</em> can have two possible formats:</p>
+<ul class="simple">
+<li>Console format.</li>
+<li>CSV format.</li>
+</ul>
+<div class="section" id="console-format">
+<h3>Console format<a class="headerlink" href="#console-format" title="Permalink to this headline">¶</a></h3>
+<p>When <strong>checkviewaccess</strong> is used without any argument, the output format will
+be like:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python manage.py checkviewaccess
 Start checking views access.
 Start gathering information.
 Finish gathering information.
-Django roles active for site: False.
+Django roles access middleware is active: False.
 
 ...
 
@@ -137,8 +145,43 @@ Django roles active for site: False.
 End checking view access.
 </pre></div>
 </div>
-<div class="section" id="django-roles-active-for-site">
-<h3>Django roles active for site<a class="headerlink" href="#django-roles-active-for-site" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="csv-format">
+<h3>CSV format<a class="headerlink" href="#csv-format" title="Permalink to this headline">¶</a></h3>
+<p>Is possible to export site’s view access in csv format with the next columns:</p>
+<ul class="simple">
+<li>App Name: Application name to which belong the view being reported.</li>
+<li>Type: With any of this values: ‘no type’,’NOT_SECURED’, ‘PUBLIC’, ‘SECURED’.</li>
+<li>View Name: The name of the vie or None.</li>
+<li>Url: The regex (django 1.10 and django 1.11) or pattern (django 2+)</li>
+<li>Status: With any of this values: Normal, Warning, Error.</li>
+<li>Status description: If there is a description for the state it is
+reported here; eg cause of error or warning.</li>
+</ul>
+<p>To get the report with csv format, execute:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python manage.py checkviewaccess --output-format csv
+</pre></div>
+</div>
+<p>Also could be useful to send output to a file and then use other application
+to read it’s content:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python manage.py checkviewaccess --output-format csv &gt; checkviewaccess.csv
+</pre></div>
+</div>
+<p>When <strong>checkviewaccess</strong> is used with csv format, the output format will
+be like:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Reported: 2019-04-09 14:28:04.712023+00:00
+Django roles access middleware is active: True.
+App Name,Type,View Name,Url,Status,Status description
+app1,SECURED,app1:view1,app1/view1/,Normal,
+app2,PUBLIC,app2:view1,app2/,Normal,View access is of typeAuthorized.
+app2,PUBLIC,app2:view2,app2/view2/&lt;int:pk&gt;/,Normal, Public access ...
+Undefined app,no type,start,,Normal,
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="django-roles-access-middleware-is-active">
+<h2>Django roles access middleware is active<a class="headerlink" href="#django-roles-access-middleware-is-active" title="Permalink to this headline">¶</a></h2>
 <p>This indicate if Django roles access middleware is being used or not. When
 <strong>True</strong> means middleware is <em>active</em> and all views are <em>protected by Django
 role</em>. When <strong>False</strong> means Django roles access middleware is not installed.</p>
@@ -146,7 +189,7 @@ role</em>. When <strong>False</strong> means Django roles access middleware is n
 Start checking views access.
 Start gathering information.
 Finish gathering information.
-Django roles active for site: True.
+Django roles access middleware is active: True.
 
 ...
 
@@ -184,7 +227,7 @@ Django roles active for site: True.
 End checking view access.
 </pre></div>
 </div>
-<p>In above example <cite>Django roles active for site:</cite> is <strong>True</strong>.
+<p>In above example <cite>Django roles access middleware is active:</cite> is <strong>True</strong>.
 If a view belong to an application without configured type and no
 <a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> associated, an <em>ERROR</em> will be
 reported because there is no default behavior for the view. The access to it
@@ -192,28 +235,11 @@ will depends on it implementation, this mean, for example, the view could be
 decorated with Django <em>login_required decorator</em>.</p>
 <p>Views without application will be classified under an application with
 name <em>Undefined app</em>.</p>
-</div>
 <div class="section" id="applications-type">
 <h3>Applications type<a class="headerlink" href="#applications-type" title="Permalink to this headline">¶</a></h3>
 <p>When application has no configured type is reported as <cite>app_name has no type</cite>
 . In any other case the configured type for the application is reported for
 example <cite>app_name is SECURED type</cite>.</p>
-</div>
-</div>
-<div class="section" id="output-format">
-<h2>Output format<a class="headerlink" href="#output-format" title="Permalink to this headline">¶</a></h2>
-<p>Is possible to export site’s view access in csv format with the next columns:</p>
-<ul class="simple">
-<li>App Name: Application name to which belong the view being reported.</li>
-<li>Type: [‘None’,’NOT_SECURED’, ‘PUBLIC’, ‘SECURED’]</li>
-<li>View Name: The name of the vie or blank.</li>
-<li>Url: The regex (django 1.10 and django 1.11) or pattern (django 2+)</li>
-<li>Status: Normal, Warning, Error.</li>
-<li>Status description: If there is a description for the state it should be
-reported here; eg cause of error or warning.</li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py checkviewaccess --output-format csv
-</pre></div>
 </div>
 </div>
 <div class="section" id="analysis">
@@ -295,11 +321,14 @@ ERROR of configuration is reported.</li>
   <ul>
 <li><a class="reference internal" href="#">Check view access</a><ul>
 <li><a class="reference internal" href="#security-report-format">Security report format</a><ul>
-<li><a class="reference internal" href="#django-roles-active-for-site">Django roles active for site</a></li>
+<li><a class="reference internal" href="#console-format">Console format</a></li>
+<li><a class="reference internal" href="#csv-format">CSV format</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#django-roles-access-middleware-is-active">Django roles access middleware is active</a><ul>
 <li><a class="reference internal" href="#applications-type">Applications type</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#output-format">Output format</a></li>
 <li><a class="reference internal" href="#analysis">Analysis</a></li>
 <li><a class="reference internal" href="#method">Method</a></li>
 </ul>
@@ -334,7 +363,7 @@ ERROR of configuration is reported.</li>
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Apr 06, 2019</p>
+              <p class="topless">Apr 09, 2019</p>
           </div>
         
       
@@ -344,7 +373,7 @@ ERROR of configuration is reported.</li>
       <div class="nav">
     &laquo; <a href="middleware.html" title="Using Django roles access middleware">previous</a>
      |
-    <a title="Django Roles Access 0.8 documentation" href="index.html" accesskey="U">up</a>
+    <a title="Django Roles Access 0.9 documentation" href="index.html" accesskey="U">up</a>
    |
     <a href="template_tag.html" title="Django roles template tag">next</a> &raquo;</div>
     </div>

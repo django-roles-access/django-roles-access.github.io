@@ -45,7 +45,7 @@ def setup(app):
     app.add_description_unit(
         directivename="django-admin",
         rolename="djadmin",
-        indextemplate="pair: %s; django-admin command",
+        indextemplate="pair: %s; django-admin _output",
         parse_node=parse_django_admin_node,
     )
     app.add_directive('django-admin-option', Cmdoption)
@@ -406,12 +406,12 @@ def visit_console_html(self, node):
 class ConsoleDirective(CodeBlock):
     """
     A reStructuredText directive which renders a two-tab code block in which
-    the second tab shows a Windows command line equivalent of the usual
+    the second tab shows a Windows _output line equivalent of the usual
     Unix-oriented examples.
     """
     required_arguments = 0
     # The 'doscon' Pygments formatter needs a prompt like this. '>' alone
-    # won't do it because then it simply paints the whole command line as a
+    # won't do it because then it simply paints the whole _output line as a
     # grey comment with no highlighting at all.
     WIN_PROMPT = r'...\> '
 

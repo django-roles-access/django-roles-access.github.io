@@ -2,7 +2,7 @@
 Check view access
 =================
 
-Django roles access register an action with manage.py:
+Django roles access register an action with manage.py: **checkviewaccess**
 ::
 
     python manage.py checkviewaccess
@@ -35,7 +35,18 @@ print to standard output a *security report* of access to each view.
 Security report format
 ----------------------
 
-Printed *security report* has format:
+Printed *security report* can have two possible formats:
+
+* Console format.
+
+* CSV format.
+
+
+Console format
+--------------
+
+When **checkviewaccess** is used without any argument, the output format will
+be like:
 
 .. code-block:: text
 
@@ -43,7 +54,7 @@ Printed *security report* has format:
     Start checking views access.
     Start gathering information.
     Finish gathering information.
-    Django roles active for site: False.
+    Django roles access middleware is active: False.
 
     ...
 
@@ -69,8 +80,57 @@ Printed *security report* has format:
     End checking view access.
 
 
-Django roles active for site
------------------------------
+
+CSV format
+----------
+
+Is possible to export site’s view access in csv format with the next columns:
+
+* App Name: Application name to which belong the view being reported.
+
+* Type: With any of this values: 'no type','NOT_SECURED', 'PUBLIC', 'SECURED'.
+
+* View Name: The name of the vie or None.
+
+* Url: The regex (django 1.10 and django 1.11) or pattern (django 2+)
+
+* Status: With any of this values: Normal, Warning, Error.
+
+* Status description: If there is a description for the state it is
+  reported here; eg cause of error or warning.
+
+
+To get the report with csv format, execute:
+
+.. code-block:: text
+
+    python manage.py checkviewaccess --output-format csv
+
+Also could be useful to send output to a file and then use other application
+to read it's content:
+
+.. code-block:: text
+
+    python manage.py checkviewaccess --output-format csv > checkviewaccess.csv
+
+When **checkviewaccess** is used with csv format, the output format will
+be like:
+
+.. code-block:: text
+
+    Reported: 2019-04-09 14:28:04.712023+00:00
+    Django roles access middleware is active: True.
+    App Name,Type,View Name,Url,Status,Status description
+    app1,SECURED,app1:view1,app1/view1/,Normal,
+    app2,PUBLIC,app2:view1,app2/,Normal,View access is of typeAuthorized.
+    app2,PUBLIC,app2:view2,app2/view2/<int:pk>/,Normal,	Public access ...
+    Undefined app,no type,start,,Normal,
+
+
+
+----------------------------------------
+Django roles access middleware is active
+----------------------------------------
 
 This indicate if Django roles access middleware is being used or not. When
 **True** means middleware is *active* and all views are *protected by Django
@@ -82,7 +142,7 @@ role*. When **False** means Django roles access middleware is not installed.
     Start checking views access.
     Start gathering information.
     Finish gathering information.
-    Django roles active for site: True.
+    Django roles access middleware is active: True.
 
     ...
 
@@ -119,7 +179,7 @@ role*. When **False** means Django roles access middleware is not installed.
 
     End checking view access.
 
-In above example `Django roles active for site:` is **True**.
+In above example `Django roles access middleware is active:` is **True**.
 If a view belong to an application without configured type and no
 :class:`django_roles_access.models.ViewAccess` associated, an *ERROR* will be
 reported because there is no default behavior for the view. The access to it
@@ -135,31 +195,6 @@ Applications type
 When application has no configured type is reported as `app_name has no type`
 . In any other case the configured type for the application is reported for
 example `app_name is SECURED type`.
-
-
--------------
-Output format
--------------
-
-Is possible to export site’s view access in csv format with the next columns:
-
-* App Name: Application name to which belong the view being reported.
-
-* Type: ['None','NOT_SECURED', 'PUBLIC', 'SECURED']
-
-* View Name: The name of the vie or blank.
-
-* Url: The regex (django 1.10 and django 1.11) or pattern (django 2+)
-
-* Status: Normal, Warning, Error.
-
-* Status description: If there is a description for the state it should be
-  reported here; eg cause of error or warning.
-
-.. code-block:: bash
-
-    python manage.py checkviewaccess --output-format csv
-
 
 --------
 Analysis
