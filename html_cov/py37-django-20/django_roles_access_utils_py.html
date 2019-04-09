@@ -351,8 +351,8 @@
 <p id="t26" class="pln">                   <span class="str">u' and application type is "PUBLIC". Anonymous user can'</span><span class="strut">&nbsp;</span></p>
 <p id="t27" class="pln">                   <span class="str">u' access the view.'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t28" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t29" class="stm run hide_run"><span class="nam">NONE_TYPE_DEFAULT</span> <span class="op">=</span> <span class="nam">_</span><span class="op">(</span><span class="str">u'ERROR: Django roles middleware is active; or view'</span><span class="strut">&nbsp;</span></p>
-<p id="t30" class="pln">                      <span class="str">u' is protected with Django roles decorator or mixin,'</span><span class="strut">&nbsp;</span></p>
+<p id="t29" class="stm run hide_run"><span class="nam">NONE_TYPE_DEFAULT</span> <span class="op">=</span> <span class="nam">_</span><span class="op">(</span><span class="str">u'ERROR: Django roles access middleware is active; or '</span><span class="strut">&nbsp;</span></p>
+<p id="t30" class="pln">                      <span class="str">u'view is protected with Django roles decorator or mixin,'</span><span class="strut">&nbsp;</span></p>
 <p id="t31" class="pln">                      <span class="str">u' and has no application or application has no type. '</span><span class="strut">&nbsp;</span></p>
 <p id="t32" class="pln">                      <span class="str">u'There are no View Access object for the view. Is not '</span><span class="strut">&nbsp;</span></p>
 <p id="t33" class="pln">                      <span class="str">u'possible to determine behavior for access view. Access'</span><span class="strut">&nbsp;</span></p>
@@ -444,7 +444,7 @@
 <p id="t119" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t120" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t121" class="stm run hide_run"><span class="key">def</span> <span class="nam">view_access_analyzer</span><span class="op">(</span><span class="nam">app_type</span><span class="op">,</span> <span class="nam">callback</span><span class="op">,</span> <span class="nam">view_name</span><span class="op">,</span> <span class="nam">site_active</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t122" class="stm run hide_run">    <span class="nam">result</span> <span class="op">=</span> <span class="nam">_</span><span class="op">(</span><span class="str">u'No Django roles tool used. Access to view depends on '</span><span class="strut">&nbsp;</span></p>
+<p id="t122" class="stm run hide_run">    <span class="nam">result</span> <span class="op">=</span> <span class="nam">_</span><span class="op">(</span><span class="str">u'No Django roles access tool used. Access to view depends on '</span><span class="strut">&nbsp;</span></p>
 <p id="t123" class="pln">               <span class="str">u'its implementation.'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t124" class="stm run hide_run">    <span class="nam">view_access</span> <span class="op">=</span> <span class="nam">ViewAccess</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">filter</span><span class="op">(</span><span class="nam">view</span><span class="op">=</span><span class="nam">view_name</span><span class="op">)</span><span class="op">.</span><span class="nam">first</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t125" class="stm run hide_run">    <span class="key">if</span> <span class="nam">site_active</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
@@ -467,7 +467,7 @@
 <p id="t142" class="pln">        <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t143" class="stm run hide_run">            <span class="key">if</span> <span class="nam">view_access</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t144" class="stm run hide_run">                <span class="nam">result</span> <span class="op">=</span> <span class="nam">_</span><span class="op">(</span><span class="str">u'ERROR: View access object exist for the view, '</span><span class="strut">&nbsp;</span></p>
-<p id="t145" class="pln">                           <span class="str">u'but no Django role tool is used: neither '</span><span class="strut">&nbsp;</span></p>
+<p id="t145" class="pln">                           <span class="str">u'but no Django role access tool is used: neither '</span><span class="strut">&nbsp;</span></p>
 <p id="t146" class="pln">                           <span class="str">u'decorator, mixin, or middleware.'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t147" class="stm run hide_run">    <span class="key">return</span> <span class="nam">result</span><span class="strut">&nbsp;</span></p>
 <p id="t148" class="pln"><span class="strut">&nbsp;</span></p>
@@ -518,7 +518,7 @@
 <p id="t193" class="stm run hide_run">        <span class="nam">_app_type</span> <span class="op">=</span> <span class="nam">app_type</span><span class="strut">&nbsp;</span></p>
 <p id="t194" class="stm run hide_run">        <span class="key">if</span> <span class="nam">app_type</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t195" class="stm run hide_run">            <span class="nam">output</span> <span class="op">+=</span> <span class="nam">_</span><span class="op">(</span><span class="str">u'\t\t{} has no type.'</span><span class="op">.</span><span class="nam">format</span><span class="op">(</span><span class="nam">app_name</span><span class="op">,</span> <span class="nam">app_type</span><span class="op">)</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t196" class="stm run hide_run">            <span class="nam">_app_type</span> <span class="op">=</span> <span class="str">'no type'</span><span class="strut">&nbsp;</span></p>
+<p id="t196" class="stm run hide_run">            <span class="nam">_app_type</span> <span class="op">=</span> <span class="nam">_</span><span class="op">(</span><span class="str">'no type'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t197" class="pln">        <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t198" class="stm run hide_run">            <span class="nam">output</span> <span class="op">+=</span> <span class="nam">_</span><span class="op">(</span><span class="str">u'\t\t{} is {} type.'</span><span class="op">.</span><span class="nam">format</span><span class="op">(</span><span class="nam">app_name</span><span class="op">,</span> <span class="nam">app_type</span><span class="op">)</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t199" class="stm run hide_run">        <span class="key">if</span> <span class="nam">len</span><span class="op">(</span><span class="nam">view_list</span><span class="op">)</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
@@ -586,7 +586,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.3</a>,
-            created at 2019-04-09 08:42
+            created at 2019-04-09 10:56
         </p>
     </div>
 </div>
