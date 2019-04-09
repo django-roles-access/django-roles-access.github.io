@@ -2,6 +2,8 @@
 Welcome to Django Roles Access documentation
 ============================================
 
+.. image:: django-roles-access.png
+
 .. image:: https://travis-ci.org/django-roles-access/master.svg?branch=master
     :target: https://travis-ci.org/django-roles-access/master
 
