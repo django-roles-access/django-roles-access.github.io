@@ -81,7 +81,7 @@
             
   <div class="section" id="check-view-access">
 <h1>Check view access<a class="headerlink" href="#check-view-access" title="Permalink to this headline">¶</a></h1>
-<p>Django roles access register an action with manage.py: <strong>checkviewaccess</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> register an action with manage.py: <strong>checkviewaccess</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">checkviewaccess</span>
 </pre></div>
 </div>
@@ -90,23 +90,23 @@ print to standard output a <em>security report</em> of access to each view.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>Django documentation explain the algorithm the system follows to determine
-which Python code to execute <a class="reference external" href="https://docs.djangoproject.com/en/dev/topics/http/urls/#how-django-processes-a-request">django_algorithm</a>:</p>
+which Python code to execute (<a class="reference external" href="https://docs.djangoproject.com/en/dev/topics/http/urls/#how-django-processes-a-request">django_algorithm</a>):</p>
 <p>… but if the incoming HttpRequest object has a urlconf attribute (set by
 middleware), its value will be used in place of the ROOT_URLCONF setting.
 …</p>
-<p class="last">Django roles access <em>checkviewaccess</em> takes from ROOT_URLCONF the root for
-all site’s views. If an installed middleware change this root, registered
+<p class="last"><em>checkviewaccess</em> action takes from ROOT_URLCONF the root
+for all site’s views. If an installed middleware change this root, registered
 action may not work as expected.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Django roles access middleware do not change ROOT_URLCONF or any other
+<p class="last"><code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> middleware do not change ROOT_URLCONF or any other
 attribute of the HTTPRequest. HTTPResponse is changed only when access
 denied is reached.</p>
 </div>
 <div class="section" id="security-report-format">
 <h2>Security report format<a class="headerlink" href="#security-report-format" title="Permalink to this headline">¶</a></h2>
-<p>Printed <em>security report</em> can have two possible formats:</p>
+<p>Printed <em>security report</em> can have two formats:</p>
 <ul class="simple">
 <li>Console format.</li>
 <li>CSV format.</li>
@@ -148,14 +148,15 @@ End checking view access.
 </div>
 <div class="section" id="csv-format">
 <h3>CSV format<a class="headerlink" href="#csv-format" title="Permalink to this headline">¶</a></h3>
-<p>Is possible to export site’s view access in csv format with the next columns:</p>
+<p>CSV format exports site’s view access with next columns:</p>
 <ul class="simple">
-<li>App Name: Application name to which belong the view being reported.</li>
-<li>Type: With any of this values: ‘no type’,’NOT_SECURED’, ‘PUBLIC’, ‘SECURED’.</li>
-<li>View Name: The name of the vie or None.</li>
-<li>Url: The regex (django 1.10 and django 1.11) or pattern (django 2+)</li>
-<li>Status: With any of this values: Normal, Warning, Error.</li>
-<li>Status description: If there is a description for the state it is
+<li><strong>App Name</strong>: Application name to which belong the view being reported.</li>
+<li><strong>Type</strong>: Will have one of next values: ‘no type’,’NOT_SECURED’, ‘PUBLIC’,
+‘SECURED’, ‘DISABLED’.</li>
+<li><strong>View Name</strong>: Name of the view or None.</li>
+<li><strong>Url</strong>: Regex (django 1.10 and django 1.11) or pattern (django 2+)</li>
+<li><strong>Status</strong>: Will have one of next values: Normal, Warning, Error.</li>
+<li><strong>Status description</strong>: If there is a description for the <strong>Status</strong> it will
 reported here; eg cause of error or warning.</li>
 </ul>
 <p>To get the report with csv format, execute:</p>
@@ -182,9 +183,15 @@ Undefined app,no type,start,,Normal,
 </div>
 <div class="section" id="django-roles-access-middleware-is-active">
 <h2>Django roles access middleware is active<a class="headerlink" href="#django-roles-access-middleware-is-active" title="Permalink to this headline">¶</a></h2>
-<p>This indicate if Django roles access middleware is being used or not. When
-<strong>True</strong> means middleware is <em>active</em> and all views are <em>protected by Django
-role</em>. When <strong>False</strong> means Django roles access middleware is not installed.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Django</span> <span class="n">roles</span> <span class="n">access</span> <span class="n">middleware</span> <span class="ow">is</span> <span class="n">active</span>
+</pre></div>
+</div>
+<p>This indicate if <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> middleware is being used or not.
+When is <strong>True</strong> means middleware is <em>active</em> and all views are <em>protected by</em>
+<code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code>, if and only if the applications have been categorized
+in a security group (<a class="reference internal" href="middleware.html#applications-type"><span class="std std-ref">Applications type</span></a>) or a
+<a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> objects has been created. When is
+<strong>False</strong> means <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> middleware is not installed.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python manage.py checkviewaccess
 Start checking views access.
 Start gathering information.
@@ -228,82 +235,20 @@ End checking view access.
 </pre></div>
 </div>
 <p>In above example <cite>Django roles access middleware is active:</cite> is <strong>True</strong>.
-If a view belong to an application without configured type and no
-<a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> associated, an <em>ERROR</em> will be
-reported because there is no default behavior for the view. The access to it
-will depends on it implementation, this mean, for example, the view could be
-decorated with Django <em>login_required decorator</em>.</p>
-<p>Views without application will be classified under an application with
-name <em>Undefined app</em>.</p>
+If a view belong to an application without configured type
+(<a class="reference internal" href="middleware.html#applications-type"><span class="std std-ref">Applications type</span></a>) and there is no
+<a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> associated with the view, an
+<em>ERROR</em> will be reported because there is no default security behavior for
+the view. The access to the view depends on it implementation; for example, the
+view is decorated with Django <em>login_required decorator</em>.</p>
+<p>Views not belonging to an application will be classified under an application
+with name <em>Undefined app</em>. This happens when no name is given to an application.</p>
 <div class="section" id="applications-type">
 <h3>Applications type<a class="headerlink" href="#applications-type" title="Permalink to this headline">¶</a></h3>
-<p>When application has no configured type is reported as <cite>app_name has no type</cite>
-. In any other case the configured type for the application is reported for
-example <cite>app_name is SECURED type</cite>.</p>
+<p>If an application has no configured type (<a class="reference internal" href="middleware.html#applications-type"><span class="std std-ref">Applications type</span></a>), will be
+reported as <cite>app_name has no type</cite>. In any other case the configured type for
+the application is reported; for example, <cite>app_name is SECURED type</cite> .</p>
 </div>
-</div>
-<div class="section" id="analysis">
-<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<p>The used analysis follow next algorithm:</p>
-<ol class="arabic simple">
-<li>All views are collected and grouped by application. In the created report
-this step si called <strong>gathering information</strong>.</li>
-<li>Is checked if Django roles access middleware is active or not. When active
-the report will indicate <strong>Django roles active for site: True</strong>. When not
-active it will br reported as <strong>Django roles active for site: False</strong>. Also
-analysis will keep track of this state in it’s <strong>site_active</strong> variable.</li>
-<li>For each installed application (settings.INSTALLED_APPLICATION) is checked
-if the application was classified as explained in
-<a class="reference internal" href="middleware.html#applications-type"><span class="std std-ref">Applications type</span></a>. The result of this is reported to standard output.</li>
-<li>For each view of the analyzed application selected in step 3, is checked
-the access security by analyzing the callable associated with the view. This
-analysis include:<ul>
-<li>Evaluate if view is decorated with <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> decorator, or
-if mixin was used.</li>
-<li>Search any <a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> object for the
-view.</li>
-<li>Take in consideration if <strong>site_active</strong> is True or not.</li>
-<li>Take in consideration the <a class="reference internal" href="middleware.html#applications-type"><span class="std std-ref">Applications type</span></a> of the application
-holding the view.</li>
-</ul>
-</li>
-<li>Report from selected view will indicate:<ul>
-<li>View Name.</li>
-<li>Declared URL.</li>
-<li>Access security status.</li>
-</ul>
-</li>
-</ol>
-</div>
-<div class="section" id="method">
-<h2>Method<a class="headerlink" href="#method" title="Permalink to this headline">¶</a></h2>
-<p>The used method to determine <strong>Access security status</strong> of a view is:</p>
-<ol class="arabic simple">
-<li>A <a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> object is searched for the
-view.</li>
-<li>If <strong>site_active</strong> is True:<ol class="loweralpha">
-<li>If an object was found in step 1, object security is reported for the
-view. If object security is type <cite>By role</cite> and no roles were added an
-ERROR is reported (no one, except superuser, can access de view).</li>
-<li>If no object was found; default behavior for view’s application is
-reported as explained in <a class="reference internal" href="middleware.html#applications-type"><span class="std std-ref">Applications type</span></a>.</li>
-<li>If no object was found in step 1. And no application type is
-defined for view’s application (or view has no application defined). An
-ERROR of configuration is reported.</li>
-</ol>
-</li>
-<li>If <strong>site_active</strong> is False and <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> decorator or mixin
-was used:<ol class="loweralpha">
-<li>In case exist object found in step 1, object security is reported.</li>
-<li>In case no object were found in step 1. And view’s application has a
-type as defined in <a class="reference internal" href="middleware.html#applications-type"><span class="std std-ref">Applications type</span></a>. Default behavior for the
-application type is reported as view access security.</li>
-<li>In case no object were found in step 1. And no application type is
-defined for view’s application (or view has no application defined). An
-ERROR of configuration is reported.</li>
-</ol>
-</li>
-</ol>
 </div>
 </div>
 
@@ -329,8 +274,6 @@ ERROR of configuration is reported.</li>
 <li><a class="reference internal" href="#applications-type">Applications type</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#analysis">Analysis</a></li>
-<li><a class="reference internal" href="#method">Method</a></li>
 </ul>
 </li>
 </ul>
@@ -363,7 +306,7 @@ ERROR of configuration is reported.</li>
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Apr 09, 2019</p>
+              <p class="topless">May 21, 2019</p>
           </div>
         
       

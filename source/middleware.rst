@@ -5,32 +5,32 @@ Using Django roles access middleware
 ====================================
 
 In :ref:`Quick start` was explained how to configure in two steps a security
-access for the view; but this require *new code*, to add a decorator or a
-mixin is new code.
+access for a view; but this requires *new code*: in the present context it is
+assumed that adding a decorator or a mixin is adding new code.
 
-It is also possible to use Django roles access as middleware, for example under
-next two reasons:
+It is also possible to use ``django_roles_access`` as middleware, for example in
+one of the following two scenarios:
 
-* No new code wants to be added to project.
+* You do not want to add new code to the project.
 
-* Project size demand a solution for many applications, including third-party
-  solutions
+* The size of the project demands a solution for many applications, including
+  third-party solutions
 
-For example, a requirement could be to all user needing to be logged-in to
-access any view of a particular application. Possible solutions to this
-could be (between others):
+For example, a requirement may be that all users must log in to access any v
+iew of a particular application. Possible solutions to this requirement
+(among others) can be:
 
 * Use *login_required*. in all applications views.
 
-* Use a hook at URLConf configuration.
+* Use a hook in URLConf configuration.
 
-* Or use *Django roles access middleware*, an declare the application as
-  *Authorized*.
+* Use the ``django_roles_access`` middleware and declare the application of
+  *SECURED* type
 
 .. note::
 
-   To know more about application classification read after installation and
-   configuration: :ref:`Applications type`.
+   To know more about the classifications of the applications read after
+   installation and configuration: :ref:`Applications type`.
 
 ------------
 Installation
@@ -51,10 +51,11 @@ In Django's site *settings* file add
 
 .. warning::
 
-   Once middleware is installed, to change the behavior of a view belonging
-   to a particular application, at least a
-   :class:`django_roles_access.models.ViewAccess` object needs to be created.
-   If not, there will be no change while no application type is set
+   Once the middleware is installed, to change the behavior of a view
+   belonging to a particular application, at least one
+   :class:`django_roles_access.models.ViewAccess` object needs to be created
+   for that view. Otherwise there will be no change in the behavior of any view
+   unless an application is classified with a type as explained below
    (:ref:`Applications type`).
 
 
@@ -62,16 +63,13 @@ In Django's site *settings* file add
 Configuration
 -------------
 
-The last step is to classify installed applications in security
+The last step is to classify installed applications in one of the security
 groups in Django site's *settings* file.
 
-With Django roles access is possible to classify installed applications in three
-types. When application is classified in any of this three types, and the
-middleware installed, all access to applications's views will have the
-default security of the type used to classify the application.
-
-To know more about applications classification with Django roles read next:
-:ref:`Applications type`.
+When an application is classified in one of the security groups, and the
+middleware is installed, all accesses to the application views will have access
+restricted, or not, according to the default behavior of the selected
+security group.
 
 
 .. _`Applications type`:
@@ -80,9 +78,9 @@ To know more about applications classification with Django roles read next:
 Applications type
 =================
 
-To setup *applications type* (and with this, their default security), is
-necessary to add any of the next three variables (Python lists) in
-*settings file*:
+To classify the applications in security groups (*applications type*), and with
+it their security by default, it is necessary to add at least some of the
+following variables to the *settings file*:
 
 * NOT_SECURED
 
@@ -90,53 +88,57 @@ necessary to add any of the next three variables (Python lists) in
 
 * SECURED
 
+* DISABLED
+
 .. note::
 
-  By default if none of this 3 variables are declared in *settings*, all
-  applications will be assumed as public, and their views will have public
-  access security. Views will preserve their previous security status: for
-  example, if a view was restricted by *login_required* it will remain
-  restricted by the same logic.
+  By default if none of these variables is declared in the *settings file*, the
+  views of the applications will still have the same type of access they had
+  before installing ``django_roles_access`` and / or its middleware.
 
 -----------
 NOT_SECURED
 -----------
-List of applications not under site security.
+List of applications without security. The views of these applications will
+continue to have the same security they had had before installing
+``django_roles_access``.
 
-The concept of NOT_SECURED application is to put together all applications
-not providing any view (no URLConf defined for the application). There are no
-views with the need to be secured.
-
-.. warning::
-
-    If an application is classified as NOT_SECURED, and has views, anyone
-    will be able to access this views.
+The concept for this security group is to contain all those applications that
+do not have views and therefore it is not necessary to restrict access.
 
 .. warning::
 
-    If an application is classified as NOT_SECURED, and has views, no mather
-    if exists :class:`django_roles_access.models.ViewAccess` objects for those
-    views, NOT_SECURED condition will take precedence over
-    :class:`django_roles_access.models.ViewAccess` object.
+    If an application is classified as NOT_SECURED, and has views, it does not
+    matter if there are :class:`django_roles_access.models.ViewAccess` objects
+    for the views, the security of those objects will be ignored.
+
 
 ------
 PUBLIC
 ------
-List of applications mainly for public access.
+List of applications used mainly with public access.
 
-PUBLIC applications have their views accessibly to anonymous user except an
-object of type :class:`django_roles_access.models.ViewAccess` exist for a view
-and its configuration is more restrictive than public.
+PUBLIC applications have their views accessible to anonymous users. The
+exception would be if :class:`django_roles_access.models.ViewAccess` object
+exist for one or more of its views, and this configuration results in more
+restrictive access.
 
 .. note::
 
-   The behavior of views in PUBLIC applications that have other security
-   challenge, will not be changed.
+   If a view of an application classified as PUBLIC has its access restricted
+   by some other means (for example login_required decorator), the
+   restricted access will take precedence.
+
 
 -------
 SECURED
 -------
-List of applications requiring at least the user to be *Authorized*
+List of applications that require users to be *Authorized*.
 
-As default behavior, application classified as a SECURED will require the user
-to be logged in.
+The default behavior of applications classified as SECURED is to require the
+user to log in.
+
+--------
+DISABLED
+--------
+

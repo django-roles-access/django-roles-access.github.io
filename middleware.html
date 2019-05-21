@@ -82,28 +82,28 @@
   <div class="section" id="using-django-roles-access-middleware">
 <span id="id1"></span><h1>Using Django roles access middleware<a class="headerlink" href="#using-django-roles-access-middleware" title="Permalink to this headline">¶</a></h1>
 <p>In <a class="reference internal" href="quickstart.html#quick-start"><span class="std std-ref">Quick start</span></a> was explained how to configure in two steps a security
-access for the view; but this require <em>new code</em>, to add a decorator or a
-mixin is new code.</p>
-<p>It is also possible to use Django roles access as middleware, for example under
-next two reasons:</p>
+access for a view; but this requires <em>new code</em>: in the present context it is
+assumed that adding a decorator or a mixin is adding new code.</p>
+<p>It is also possible to use <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> as middleware, for example in
+one of the following two scenarios:</p>
 <ul class="simple">
-<li>No new code wants to be added to project.</li>
-<li>Project size demand a solution for many applications, including third-party
-solutions</li>
+<li>You do not want to add new code to the project.</li>
+<li>The size of the project demands a solution for many applications, including
+third-party solutions</li>
 </ul>
-<p>For example, a requirement could be to all user needing to be logged-in to
-access any view of a particular application. Possible solutions to this
-could be (between others):</p>
+<p>For example, a requirement may be that all users must log in to access any v
+iew of a particular application. Possible solutions to this requirement
+(among others) can be:</p>
 <ul class="simple">
 <li>Use <em>login_required</em>. in all applications views.</li>
-<li>Use a hook at URLConf configuration.</li>
-<li>Or use <em>Django roles access middleware</em>, an declare the application as
-<em>Authorized</em>.</li>
+<li>Use a hook in URLConf configuration.</li>
+<li>Use the <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> middleware and declare the application of
+<em>SECURED</em> type</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">To know more about application classification read after installation and
-configuration: <a class="reference internal" href="#applications-type"><span class="std std-ref">Applications type</span></a>.</p>
+<p class="last">To know more about the classifications of the applications read after
+installation and configuration: <a class="reference internal" href="#applications-type"><span class="std std-ref">Applications type</span></a>.</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
@@ -119,79 +119,77 @@ configuration: <a class="reference internal" href="#applications-type"><span cla
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Once middleware is installed, to change the behavior of a view belonging
-to a particular application, at least a
-<a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> object needs to be created.
-If not, there will be no change while no application type is set
+<p class="last">Once the middleware is installed, to change the behavior of a view
+belonging to a particular application, at least one
+<a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> object needs to be created
+for that view. Otherwise there will be no change in the behavior of any view
+unless an application is classified with a type as explained below
 (<a class="reference internal" href="#applications-type"><span class="std std-ref">Applications type</span></a>).</p>
 </div>
 </div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>The last step is to classify installed applications in security
+<p>The last step is to classify installed applications in one of the security
 groups in Django site’s <em>settings</em> file.</p>
-<p>With Django roles access is possible to classify installed applications in three
-types. When application is classified in any of this three types, and the
-middleware installed, all access to applications’s views will have the
-default security of the type used to classify the application.</p>
-<p>To know more about applications classification with Django roles read next:
-<a class="reference internal" href="#applications-type"><span class="std std-ref">Applications type</span></a>.</p>
+<p>When an application is classified in one of the security groups, and the
+middleware is installed, all accesses to the application views will have access
+restricted, or not, according to the default behavior of the selected
+security group.</p>
 </div>
 </div>
 <div class="section" id="applications-type">
 <span id="id2"></span><h1>Applications type<a class="headerlink" href="#applications-type" title="Permalink to this headline">¶</a></h1>
-<p>To setup <em>applications type</em> (and with this, their default security), is
-necessary to add any of the next three variables (Python lists) in
-<em>settings file</em>:</p>
+<p>To classify the applications in security groups (<em>applications type</em>), and with
+it their security by default, it is necessary to add at least some of the
+following variables to the <em>settings file</em>:</p>
 <ul class="simple">
 <li>NOT_SECURED</li>
 <li>PUBLIC</li>
 <li>SECURED</li>
+<li>DISABLED</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">By default if none of this 3 variables are declared in <em>settings</em>, all
-applications will be assumed as public, and their views will have public
-access security. Views will preserve their previous security status: for
-example, if a view was restricted by <em>login_required</em> it will remain
-restricted by the same logic.</p>
+<p class="last">By default if none of these variables is declared in the <em>settings file</em>, the
+views of the applications will still have the same type of access they had
+before installing <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> and / or its middleware.</p>
 </div>
 <div class="section" id="not-secured">
 <h2>NOT_SECURED<a class="headerlink" href="#not-secured" title="Permalink to this headline">¶</a></h2>
-<p>List of applications not under site security.</p>
-<p>The concept of NOT_SECURED application is to put together all applications
-not providing any view (no URLConf defined for the application). There are no
-views with the need to be secured.</p>
+<p>List of applications without security. The views of these applications will
+continue to have the same security they had had before installing
+<code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code>.</p>
+<p>The concept for this security group is to contain all those applications that
+do not have views and therefore it is not necessary to restrict access.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">If an application is classified as NOT_SECURED, and has views, anyone
-will be able to access this views.</p>
-</div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">If an application is classified as NOT_SECURED, and has views, no mather
-if exists <a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> objects for those
-views, NOT_SECURED condition will take precedence over
-<a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> object.</p>
+<p class="last">If an application is classified as NOT_SECURED, and has views, it does not
+matter if there are <a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> objects
+for the views, the security of those objects will be ignored.</p>
 </div>
 </div>
 <div class="section" id="public">
 <h2>PUBLIC<a class="headerlink" href="#public" title="Permalink to this headline">¶</a></h2>
-<p>List of applications mainly for public access.</p>
-<p>PUBLIC applications have their views accessibly to anonymous user except an
-object of type <a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> exist for a view
-and its configuration is more restrictive than public.</p>
+<p>List of applications used mainly with public access.</p>
+<p>PUBLIC applications have their views accessible to anonymous users. The
+exception would be if <a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> object
+exist for one or more of its views, and this configuration results in more
+restrictive access.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The behavior of views in PUBLIC applications that have other security
-challenge, will not be changed.</p>
+<p class="last">If a view of an application classified as PUBLIC has its access restricted
+by some other means (for example login_required decorator), the
+restricted access will take precedence.</p>
 </div>
 </div>
 <div class="section" id="secured">
 <h2>SECURED<a class="headerlink" href="#secured" title="Permalink to this headline">¶</a></h2>
-<p>List of applications requiring at least the user to be <em>Authorized</em></p>
-<p>As default behavior, application classified as a SECURED will require the user
-to be logged in.</p>
+<p>List of applications that require users to be <em>Authorized</em>.</p>
+<p>The default behavior of applications classified as SECURED is to require the
+user to log in.</p>
+</div>
+<div class="section" id="disabled">
+<h2>DISABLED<a class="headerlink" href="#disabled" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -216,6 +214,7 @@ to be logged in.</p>
 <li><a class="reference internal" href="#not-secured">NOT_SECURED</a></li>
 <li><a class="reference internal" href="#public">PUBLIC</a></li>
 <li><a class="reference internal" href="#secured">SECURED</a></li>
+<li><a class="reference internal" href="#disabled">DISABLED</a></li>
 </ul>
 </li>
 </ul>
@@ -248,7 +247,7 @@ to be logged in.</p>
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Apr 09, 2019</p>
+              <p class="topless">May 21, 2019</p>
           </div>
         
       

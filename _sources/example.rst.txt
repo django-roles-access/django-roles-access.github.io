@@ -8,17 +8,16 @@ Example
 1 Create Django project polls app
 ---------------------------------
 
-This example show quickly how to apply ``django_roles_access``. As is
-necessary a simple Django project and application, this example use Django's
-documentation *polls app* example for this. This example can be found
-at Django_example_.
+This example show quickly how to apply ``django_roles_access``. As is necessary
+a simple Django project and application the example will use the *polls*
+application that you can find in Django documentation: Polls_App_example_.
 
-.. _Django_example: https://docs.djangoproject.com/en/dev/intro/tutorial01/
+.. _Polls_App_example: https://docs.djangoproject.com/en/dev/intro/tutorial01/
 
 
 .. note::
 
-   This example assume you have all the code of *polls app*.
+   The present example assume you have all the code of *polls app*.
 
 --------------------
 2 App and views name
@@ -27,7 +26,8 @@ at Django_example_.
 .. _`writing more views`: https://docs.djangoproject.com/en/dev/intro/tutorial03/#namespacing-url-names
 
 Make sure you name views in *polls/urls.py* as in example you can found in
-`writing more views`_. Also note how ``app_name = 'polls'`` is configured.
+`writing more views`_. Also note how has been configurated
+``app_name ='polls'`` .
 
 
 -------------------------------------
@@ -57,17 +57,17 @@ Achieve this is very simple with ``django_roles_access``:
 
 * Go to *admin site*.
 
-* Create a new :class:`django_roles_access.models.ViewAccess` configure it:
+* Create a new :class:`django_roles_access.models.ViewAccess` and configure it:
 
   * **view** attribute: Type ``polls:results``.
 
   * **type** attribute: Select ``By role``.
 
-  * **role** attribute: Add :class:`django.contrib.auth.models.Group`
+  * **role** attribute: Add a :class:`django.contrib.auth.models.Group`
     representing the specific role.
 
-If new users need access to the view, you only need to add that user to the
-any of the groups added to **roles** attributes. This can be done in run time
+If new users need access to the view, you only need to add then user to
+any of the groups added to **roles** attribute. This can be done in run time
 from *admin site*.
 
 .. note::
@@ -85,4 +85,3 @@ from *admin site*.
            ...
 
            return HttpResponseRedirect(reverse('polls:index'))
-

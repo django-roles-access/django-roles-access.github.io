@@ -2,7 +2,7 @@
 Check view access
 =================
 
-Django roles access register an action with manage.py: **checkviewaccess**
+``django_roles_access`` register an action with manage.py: **checkviewaccess**
 ::
 
     python manage.py checkviewaccess
@@ -15,19 +15,19 @@ print to standard output a *security report* of access to each view.
 .. warning::
 
    Django documentation explain the algorithm the system follows to determine
-   which Python code to execute django_algorithm_:
+   which Python code to execute (django_algorithm_):
 
    ... but if the incoming HttpRequest object has a urlconf attribute (set by
    middleware), its value will be used in place of the ROOT_URLCONF setting.
    ...
 
-   Django roles access *checkviewaccess* takes from ROOT_URLCONF the root for
-   all site's views. If an installed middleware change this root, registered
+   *checkviewaccess* action takes from ROOT_URLCONF the root
+   for all site's views. If an installed middleware change this root, registered
    action may not work as expected.
 
 .. note::
 
-   Django roles access middleware do not change ROOT_URLCONF or any other
+   ``django_roles_access`` middleware do not change ROOT_URLCONF or any other
    attribute of the HTTPRequest. HTTPResponse is changed only when access
    denied is reached.
 
@@ -35,7 +35,7 @@ print to standard output a *security report* of access to each view.
 Security report format
 ----------------------
 
-Printed *security report* can have two possible formats:
+Printed *security report* can have two formats:
 
 * Console format.
 
@@ -84,19 +84,20 @@ be like:
 CSV format
 ----------
 
-Is possible to export site’s view access in csv format with the next columns:
+CSV format exports site’s view access with next columns:
 
-* App Name: Application name to which belong the view being reported.
+* **App Name**: Application name to which belong the view being reported.
 
-* Type: With any of this values: 'no type','NOT_SECURED', 'PUBLIC', 'SECURED'.
+* **Type**: Will have one of next values: 'no type','NOT_SECURED', 'PUBLIC',
+  'SECURED', 'DISABLED'.
 
-* View Name: The name of the vie or None.
+* **View Name**: Name of the view or None.
 
-* Url: The regex (django 1.10 and django 1.11) or pattern (django 2+)
+* **Url**: Regex (django 1.10 and django 1.11) or pattern (django 2+)
 
-* Status: With any of this values: Normal, Warning, Error.
+* **Status**: Will have one of next values: Normal, Warning, Error.
 
-* Status description: If there is a description for the state it is
+* **Status description**: If there is a description for the **Status** it will
   reported here; eg cause of error or warning.
 
 
@@ -132,9 +133,17 @@ be like:
 Django roles access middleware is active
 ----------------------------------------
 
-This indicate if Django roles access middleware is being used or not. When
-**True** means middleware is *active* and all views are *protected by Django
-role*. When **False** means Django roles access middleware is not installed.
+::
+
+    Django roles access middleware is active
+
+
+This indicate if ``django_roles_access`` middleware is being used or not.
+When is **True** means middleware is *active* and all views are *protected by*
+``django_roles_access``, if and only if the applications have been categorized
+in a security group (:ref:`Applications type`) or a
+:class:`django_roles_access.models.ViewAccess` objects has been created. When is
+**False** means ``django_roles_access`` middleware is not installed.
 
 .. code-block:: text
 
@@ -180,94 +189,19 @@ role*. When **False** means Django roles access middleware is not installed.
     End checking view access.
 
 In above example `Django roles access middleware is active:` is **True**.
-If a view belong to an application without configured type and no
-:class:`django_roles_access.models.ViewAccess` associated, an *ERROR* will be
-reported because there is no default behavior for the view. The access to it
-will depends on it implementation, this mean, for example, the view could be
-decorated with Django *login_required decorator*.
+If a view belong to an application without configured type
+(:ref:`Applications type`) and there is no
+:class:`django_roles_access.models.ViewAccess` associated with the view, an
+*ERROR* will be reported because there is no default security behavior for
+the view. The access to the view depends on it implementation; for example, the
+view is decorated with Django *login_required decorator*.
 
-Views without application will be classified under an application with
-name *Undefined app*.
+Views not belonging to an application will be classified under an application
+with name *Undefined app*. This happens when no name is given to an application.
 
 Applications type
 -----------------
 
-When application has no configured type is reported as `app_name has no type`
-. In any other case the configured type for the application is reported for
-example `app_name is SECURED type`.
-
---------
-Analysis
---------
-
-The used analysis follow next algorithm:
-
-1. All views are collected and grouped by application. In the created report
-   this step si called **gathering information**.
-
-2. Is checked if Django roles access middleware is active or not. When active
-   the report will indicate **Django roles active for site: True**. When not
-   active it will br reported as **Django roles active for site: False**. Also
-   analysis will keep track of this state in it's **site_active** variable.
-
-3. For each installed application (settings.INSTALLED_APPLICATION) is checked
-   if the application was classified as explained in
-   :ref:`Applications type`. The result of this is reported to standard output.
-
-4. For each view of the analyzed application selected in step 3, is checked
-   the access security by analyzing the callable associated with the view. This
-   analysis include:
-
-   * Evaluate if view is decorated with ``django_roles_access`` decorator, or
-     if mixin was used.
-
-   * Search any :class:`django_roles_access.models.ViewAccess` object for the
-     view.
-
-   * Take in consideration if **site_active** is True or not.
-
-   * Take in consideration the :ref:`Applications type` of the application
-     holding the view.
-
-5. Report from selected view will indicate:
-
-   * View Name.
-
-   * Declared URL.
-
-   * Access security status.
-
-------
-Method
-------
-
-The used method to determine **Access security status** of a view is:
-
-1. A :class:`django_roles_access.models.ViewAccess` object is searched for the
-   view.
-
-2. If **site_active** is True:
-
-   a. If an object was found in step 1, object security is reported for the
-      view. If object security is type `By role` and no roles were added an
-      ERROR is reported (no one, except superuser, can access de view).
-
-   b. If no object was found; default behavior for view's application is
-      reported as explained in :ref:`Applications type`.
-
-   c. If no object was found in step 1. And no application type is
-      defined for view's application (or view has no application defined). An
-      ERROR of configuration is reported.
-
-3. If **site_active** is False and ``django_roles_access`` decorator or mixin
-   was used:
-
-   a. In case exist object found in step 1, object security is reported.
-
-   b. In case no object were found in step 1. And view's application has a
-      type as defined in :ref:`Applications type`. Default behavior for the
-      application type is reported as view access security.
-
-   c. In case no object were found in step 1. And no application type is
-      defined for view's application (or view has no application defined). An
-      ERROR of configuration is reported.
+If an application has no configured type (:ref:`Applications type`), will be
+reported as `app_name has no type`. In any other case the configured type for
+the application is reported; for example, `app_name is SECURED type` .

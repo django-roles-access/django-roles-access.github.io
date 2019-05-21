@@ -83,19 +83,19 @@
 <h1>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="create-django-project-polls-app">
 <span id="create-example-django-project"></span><h2>1 Create Django project polls app<a class="headerlink" href="#create-django-project-polls-app" title="Permalink to this headline">¶</a></h2>
-<p>This example show quickly how to apply <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code>. As is
-necessary a simple Django project and application, this example use Django’s
-documentation <em>polls app</em> example for this. This example can be found
-at <a class="reference external" href="https://docs.djangoproject.com/en/dev/intro/tutorial01/">Django_example</a>.</p>
+<p>This example show quickly how to apply <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code>. As is necessary
+a simple Django project and application the example will use the <em>polls</em>
+application that you can find in Django documentation: <a class="reference external" href="https://docs.djangoproject.com/en/dev/intro/tutorial01/">Polls_App_example</a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This example assume you have all the code of <em>polls app</em>.</p>
+<p class="last">The present example assume you have all the code of <em>polls app</em>.</p>
 </div>
 </div>
 <div class="section" id="app-and-views-name">
 <h2>2 App and views name<a class="headerlink" href="#app-and-views-name" title="Permalink to this headline">¶</a></h2>
 <p>Make sure you name views in <em>polls/urls.py</em> as in example you can found in
-<a class="reference external" href="https://docs.djangoproject.com/en/dev/intro/tutorial03/#namespacing-url-names">writing more views</a>. Also note how <code class="docutils literal notranslate"><span class="pre">app_name</span> <span class="pre">=</span> <span class="pre">'polls'</span></code> is configured.</p>
+<a class="reference external" href="https://docs.djangoproject.com/en/dev/intro/tutorial03/#namespacing-url-names">writing more views</a>. Also note how has been configurated
+<code class="docutils literal notranslate"><span class="pre">app_name</span> <span class="pre">='polls'</span></code> .</p>
 </div>
 <div class="section" id="start-using-django-roles-access">
 <h2>3 Start using <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code><a class="headerlink" href="#start-using-django-roles-access" title="Permalink to this headline">¶</a></h2>
@@ -122,17 +122,17 @@ decorators to <em>results</em> views</p>
 </li>
 <li><p class="first">Go to <em>admin site</em>.</p>
 </li>
-<li><p class="first">Create a new <a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> configure it:</p>
+<li><p class="first">Create a new <a class="reference internal" href="reference.html#django_roles_access.models.ViewAccess" title="django_roles_access.models.ViewAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.ViewAccess</span></code></a> and configure it:</p>
 <ul class="simple">
 <li><strong>view</strong> attribute: Type <code class="docutils literal notranslate"><span class="pre">polls:results</span></code>.</li>
 <li><strong>type</strong> attribute: Select <code class="docutils literal notranslate"><span class="pre">By</span> <span class="pre">role</span></code>.</li>
-<li><strong>role</strong> attribute: Add <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a>
+<li><strong>role</strong> attribute: Add a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a>
 representing the specific role.</li>
 </ul>
 </li>
 </ul>
-<p>If new users need access to the view, you only need to add that user to the
-any of the groups added to <strong>roles</strong> attributes. This can be done in run time
+<p>If new users need access to the view, you only need to add then user to
+any of the groups added to <strong>roles</strong> attribute. This can be done in run time
 from <em>admin site</em>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -202,7 +202,7 @@ modification could help:</p>
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Apr 09, 2019</p>
+              <p class="topless">May 21, 2019</p>
           </div>
         
       

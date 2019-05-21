@@ -7,12 +7,12 @@ content.
 
 ``django_roles_access`` decorator, mixin, or middleware, restrict access to a
 view. In this way, restriction is applied to all content of the view. With
-``django_roles_access`` *template tag* is possible to restrict access to content
-portions of a view.
+``django_roles_access`` *template tag* is possible to restrict access to
+portions of the content in a view.
 
 ``django_roles_access`` *template tag* is used in Django templates.
 
-Example for using Django roles access template tag:
+Example for using ``django_roles_access`` template tag:
 ::
 
     {% load roles_tags %}
@@ -21,9 +21,11 @@ Example for using Django roles access template tag:
         restricted content
     {% endif %}
 
-If exist :class:`django_roles_access.models.TemplateAccess` object with name
-*reports_menu*; only users in added :class:`django.contrib.auth.models.Group`
-will see **restricted content**.
+If exists a :class:`django_roles_access.models.TemplateAccess` object with a
+value in *flag* attribute equal to *reports_menu*; then only users belonging to
+any :class:`django.contrib.auth.models.Group` which has been added to *roles*
+attribute of the :class:`django_roles_access.models.TemplateAccess` object
+will see the restricted content.
 
 .. note::
 

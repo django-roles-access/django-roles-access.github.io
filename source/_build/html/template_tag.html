@@ -85,10 +85,10 @@
 content.</p>
 <p><code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> decorator, mixin, or middleware, restrict access to a
 view. In this way, restriction is applied to all content of the view. With
-<code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> <em>template tag</em> is possible to restrict access to content
-portions of a view.</p>
+<code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> <em>template tag</em> is possible to restrict access to
+portions of the content in a view.</p>
 <p><code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> <em>template tag</em> is used in Django templates.</p>
-<p>Example for using Django roles access template tag:</p>
+<p>Example for using <code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> template tag:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">load</span> <span class="n">roles_tags</span> <span class="o">%</span><span class="p">}</span>
 <span class="o">...</span>
 <span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">|</span><span class="n">check_role</span><span class="p">:</span><span class="s1">&#39;reports_menu&#39;</span> <span class="o">%</span><span class="p">}</span>
@@ -96,9 +96,11 @@ portions of a view.</p>
 <span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>If exist <a class="reference internal" href="reference.html#django_roles_access.models.TemplateAccess" title="django_roles_access.models.TemplateAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.TemplateAccess</span></code></a> object with name
-<em>reports_menu</em>; only users in added <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a>
-will see <strong>restricted content</strong>.</p>
+<p>If exists a <a class="reference internal" href="reference.html#django_roles_access.models.TemplateAccess" title="django_roles_access.models.TemplateAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.TemplateAccess</span></code></a> object with a
+value in <em>flag</em> attribute equal to <em>reports_menu</em>; then only users belonging to
+any <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.models.Group</span></code></a> which has been added to <em>roles</em>
+attribute of the <a class="reference internal" href="reference.html#django_roles_access.models.TemplateAccess" title="django_roles_access.models.TemplateAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">django_roles_access.models.TemplateAccess</span></code></a> object
+will see the restricted content.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p><code class="docutils literal notranslate"><span class="pre">django_roles_access</span></code> <em>template_tag</em> require DjangoTemplate backend to be
@@ -149,7 +151,7 @@ will be raised:</p>
         </div>
       </div>
               <h3>Last update:</h3>
-              <p class="topless">Apr 09, 2019</p>
+              <p class="topless">May 21, 2019</p>
           </div>
         
       
