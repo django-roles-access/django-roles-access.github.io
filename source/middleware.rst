@@ -142,3 +142,13 @@ user to log in.
 DISABLED
 --------
 
+List of disabled applications. Applications listed as DISABLED will have all
+their views as forbidden for any user.
+
+If an installed application, for whatever reasons, it is required not to be
+accessible, for example: maintenance, correction, etc; this type of
+classification allows denying access to the mass without the need to modify the
+code of all those applications that make use of models or other
+functions/classes implemented by the application that would result in a server
+failure if the application is simply removed from the list of installed
+applications.

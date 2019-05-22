@@ -31,9 +31,9 @@ copyright = 'MIT Licence'
 author = 'Vicente Ramos Garcia'
 
 # The short X.Y version
-version = ''
+version = '0.9.4'
 # The full version, including alpha/beta/rc tags
-release = '0.9'
+release = '0.9.4'
 
 
 # -- General configuration ---------------------------------------------------
